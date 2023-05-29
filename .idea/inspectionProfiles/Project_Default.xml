@@ -1,0 +1,57 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="7">
+            <item index="0" class="java.lang.String" itemvalue="nobr" />
+            <item index="1" class="java.lang.String" itemvalue="noembed" />
+            <item index="2" class="java.lang.String" itemvalue="comment" />
+            <item index="3" class="java.lang.String" itemvalue="noscript" />
+            <item index="4" class="java.lang.String" itemvalue="embed" />
+            <item index="5" class="java.lang.String" itemvalue="script" />
+            <item index="6" class="java.lang.String" itemvalue="input" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="9">
+            <item index="0" class="java.lang.String" itemvalue="coverage" />
+            <item index="1" class="java.lang.String" itemvalue="tomlkit" />
+            <item index="2" class="java.lang.String" itemvalue="platformdirs" />
+            <item index="3" class="java.lang.String" itemvalue="Django" />
+            <item index="4" class="java.lang.String" itemvalue="pylint" />
+            <item index="5" class="java.lang.String" itemvalue="typing_extensions" />
+            <item index="6" class="java.lang.String" itemvalue="asgiref" />
+            <item index="7" class="java.lang.String" itemvalue="astroid" />
+            <item index="8" class="java.lang.String" itemvalue="Pillow" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="TeamLeadDeal.main.profile.Profile.*" />
+          <option value="TeamLeadDeal.main.tags.Tag.objects" />
+          <option value="TeamLeadDeal.main.tests.test_profile.main" />
+          <option value="TeamLeadDeal.main.tests.test_profile.Tag" />
+          <option value="TeamLeadDeal.main.tests.test_profile.Profile" />
+          <option value="TeamLeadDeal.TeamLeadDeal.urls.main" />
+          <option value="TeamLeadDeal.main.tests.test_worksheet.main" />
+          <option value="TeamLeadDeal.main.models.Worksheet.objects" />
+          <option value="TeamLeadDeal.main.models.Message.objects" />
+          <option value="TeamLeadDeal.main.models.Chat.objects" />
+          <option value="TeamLeadDeal.main.models.Like.objects" />
+          <option value="TeamLeadDeal.main.models.Dislike.objects" />
+          <option value="TeamLeadDeal.main.models.Comment.objects" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
