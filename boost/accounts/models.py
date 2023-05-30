@@ -80,8 +80,9 @@ class User (AbstractBaseUser):
     )
     avatar = models.ImageField(
         verbose_name='Avatar',
-        default='static/default_avatar.png',
-        upload_to='media/'
+        default='media/default_images/default_avatar.png',
+        upload_to='media/',
+        blank=False,
     )
     first_name = models.CharField(
         verbose_name='first name',
