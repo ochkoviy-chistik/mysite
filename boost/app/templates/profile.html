@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Профиль</title>
+</head>
+<body>
+    <h2>{{request.user}}</h2>
+    <img src="{{request.user.avatar.url}}" alt="">
+</body>
+</html>

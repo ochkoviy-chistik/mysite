@@ -7,8 +7,11 @@
 </head>
 <body>
     <h1>BOOST!</h1>
-    {{request.user}}
+    {% if not request.user.is_authenticated %}
     <a href="/login">Войти</a>
+    {% else %}
+    <a href="/profile">{{request.user}}</a>
     <a href="/logout">Выйти</a>
+    {% endif %}
 </body>
 </html>

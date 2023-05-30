@@ -6,39 +6,57 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class UserManager (BaseUserManager):
-    def create_user(self, email, password=None):
+    def create_user(self, email, username, last_name, first_name, avatar=None, password=None):
         """
         Creates and saves a User with the given email and password.
         """
         if not email:
             raise ValueError('Users must have an email address')
 
+        if not username:
+            raise ValueError('Users must have an username')
+
+        if not last_name or not first_name:
+            raise ValueError('Users must have first name and last name')
+
         user = self.model(
             email=self.normalize_email(email),
+            username=username,
+            avatar=avatar,
+            first_name=first_name,
+            last_name=last_name,
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, email, password):
+    def create_staffuser(self, email, username, last_name, first_name, password, avatar=None):
         """
         Creates and saves a staff user with the given email and password.
         """
         user = self.create_user(
-            email,
+            email=email,
+            username=username,
+            avatar=avatar,
+            first_name=first_name,
+            last_name=last_name,
             password=password,
         )
         user.staff = True
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password):
+    def create_superuser(self, email, username, last_name, first_name, password, avatar=None):
         """
         Creates and saves a superuser with the given email and password.
         """
         user = self.create_user(
-            email,
+            email=email,
+            username=username,
+            avatar=avatar,
+            first_name=first_name,
+            last_name=last_name,
             password=password,
         )
         user.staff = True
@@ -55,22 +73,43 @@ class User (AbstractBaseUser):
         max_length=255,
         unique=True
     )
+    username = models.CharField(
+        verbose_name='username',
+        max_length=30,
+        unique=True
+    )
+    avatar = models.ImageField(
+        verbose_name='Avatar',
+        default='static/default_avatar.png',
+        upload_to='media/'
+    )
+    first_name = models.CharField(
+        verbose_name='first name',
+        max_length=30
+    )
+    last_name = models.CharField(
+        verbose_name='last name',
+        max_length=30
+    )
 
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
     def get_full_name(self):
+        return f'{self.last_name} {self.first_name}'
+
+    def get_email(self):
         return self.email
 
     def get_short_name(self):
-        return self.email
+        return self.username
 
     def __str__(self):
-        return self.email
+        return f'{self.last_name} {self.first_name}'
 
     def has_perm(self, perm, obj=None):
         """

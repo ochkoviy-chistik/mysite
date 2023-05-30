@@ -16,7 +16,7 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email']
+        fields = ['email', 'username', 'avatar', 'first_name', 'last_name']
 
     def clean_email(self):
         """
@@ -35,8 +35,10 @@ class RegisterForm(forms.ModelForm):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         password_2 = cleaned_data.get("password_2")
+
         if password is not None and password != password_2:
             self.add_error("password_2", "Your passwords must match")
+
         return cleaned_data
 
 
@@ -50,7 +52,7 @@ class UserAdminCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email']
+        fields = ['email', 'username', 'avatar', 'first_name', 'last_name']
 
     def clean(self):
         '''
@@ -59,16 +61,20 @@ class UserAdminCreationForm(forms.ModelForm):
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         password_2 = cleaned_data.get("password_2")
+
         if password is not None and password != password_2:
             self.add_error("password_2", "Your passwords must match")
+
         return cleaned_data
 
     def save(self, commit=True):
         # Save the provided password in hashed format
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password"])
+
         if commit:
             user.save()
+
         return user
 
 
@@ -81,7 +87,7 @@ class UserAdminChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'is_active', 'admin']
+        fields = ['email', 'username', 'first_name', 'avatar', 'last_name', 'password', 'is_active', 'admin']
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
