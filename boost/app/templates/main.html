@@ -28,7 +28,8 @@
     </header>
 <main>
     {% for doc in docs %}
-    <div class="card mb-3" style="max-width: 540px;">
+    <a href="{{doc.link}}">
+        <div class="card mb-3" style="max-width: 540px;">
       <div class="row g-0">
         <div class="col-md-4">
           <img src="{{doc.preview.url}}" class="img-fluid rounded-start" alt="">
@@ -42,6 +43,7 @@
         </div>
       </div>
     </div>
+    </a>
         {{doc.date}}
     {% endfor %}
 </main>
