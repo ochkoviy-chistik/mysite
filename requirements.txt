@@ -9,7 +9,6 @@ colorama==0.4.4
 coverage==7.2.2
 cryptography==3.4.8
 dbus-python==1.2.18
-defer==1.0.6
 dill==0.3.6
 distro==1.7.0
 distro-info===1.1build1
