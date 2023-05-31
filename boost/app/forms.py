@@ -1,11 +1,22 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 
 
-class RegistrationForm (UserCreationForm):
-    email = forms.EmailField(max_length=100, help_text='Required')
+class DocCreationForm (forms.Form):
+    valid_extensions = [
+        '.pdf', '.doc', '.docx',
+    ]
 
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'password1', 'password2')
+    title = forms.CharField(
+        widget=forms.TextInput,
+        required=True,
+        max_length=255,
+    )
+    description = forms.CharField(
+        widget=forms.Textarea,
+        max_length=511,
+        required=True,
+    )
+    file = forms.FileField(
+        required=True,
+        widget=forms.FileInput,
+    )

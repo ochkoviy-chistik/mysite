@@ -32,6 +32,7 @@ urlpatterns = [
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
 
     path('profile/', views.profile, name='profile'),
+    path('create/', views.create_docs, name='create_docs'),
 ]
 
 if settings.DEBUG:
