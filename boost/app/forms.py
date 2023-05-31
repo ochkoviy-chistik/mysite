@@ -11,6 +11,9 @@ class DocCreationForm (forms.Form):
         required=True,
         max_length=255,
     )
+    preview = forms.ImageField(
+        required=False,
+    )
     description = forms.CharField(
         widget=forms.Textarea,
         max_length=511,

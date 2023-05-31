@@ -62,7 +62,8 @@ def activate_email(request, user, to_email):
 
 
 def index(request):
-    return render(request, 'main.html', {})
+    context = {'docs': Doc.objects.all()}
+    return render(request, 'main.html', context)
 
 
 def profile(request):
@@ -111,10 +112,13 @@ def create_docs(request):
                 title=form.cleaned_data.get('title'),
                 link=info['public_url'],
                 description=form.cleaned_data.get('description'),
-                preview=str(info['preview']).replace('size=S', 'size=L'),
                 author=request.user,
                 date=datetime.datetime.now()
             )
+
+            if 'preview' in request.FILES:
+                doc.preview = request.FILES['preview']
+
             doc.save()
 
             return redirect('/')
