@@ -4,3 +4,4 @@ six
 pylint
 coverage
 dotenv
+yadisk
