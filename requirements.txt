@@ -3,3 +3,4 @@ Pillow
 six
 pylint
 coverage
+dotenv
