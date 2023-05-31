@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os.path
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-y_bz56ob4ws1hu_)zj5u7o+pdj_ko))$2z@&*k*fyvx!0wz4@3'
+SECRET_KEY = os.environ.get('DJANGO_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -122,17 +122,20 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = f'{BASE_DIR}'
+MEDIA_ROOT = os.path.join(BASE_DIR, '')
 MEDIA_URL = '/media/'
 
 LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'frr4140@gmail.com'
+EMAIL_FROM = 'frr4140@gmail.com'
+EMAIL_HOST_PASSWORD = 'azpchqmygrdrizsi'
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_HOST_USER = 'alexchukalov@yandex.ru'
-EMAIL_HOST_PASSWORD = 'gddnporibfkpdkbx'
-EMAIL_PORT = 465
 
 
 # Default primary key field type
