@@ -1,11 +1,8 @@
 from django import forms
+from django.core.validators import FileExtensionValidator
 
 
 class DocCreationForm (forms.Form):
-    valid_extensions = [
-        '.pdf', '.doc', '.docx',
-    ]
-
     title = forms.CharField(
         widget=forms.TextInput,
         required=True,
@@ -23,3 +20,12 @@ class DocCreationForm (forms.Form):
         required=True,
         widget=forms.FileInput,
     )
+
+    def clean_file(self):
+        validators = ['pdf', 'docx', 'doc', 'ppt', 'pptx']
+        file = self.cleaned_data.get('file')
+
+        if str(file.name).split('.')[-1] not in validators:
+            raise forms.ValidationError('недопустимый тип файла')
+
+        return file

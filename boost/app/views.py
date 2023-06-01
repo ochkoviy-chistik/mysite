@@ -5,16 +5,17 @@ from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from accounts import forms
 
-from .disk_invoker import *
-from .forms import *
+from app.disk_invoker import unique_name_generator, DiskInvoker
+from app.forms import DocCreationForm
 from accounts.models import User
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
-from .models import Doc
-from .tokens import account_activation_token
+from app.models import Doc
+from app.tokens import account_activation_token
 from io import BytesIO
+import dotenv
 
 
 # Create your views here.
@@ -123,5 +124,8 @@ def create_docs(request):
 
             return redirect('/')
 
-    context['form'] = DocCreationForm()
+    else:
+        form = DocCreationForm()
+
+    context['form'] = form
     return render(request, 'create_docs.html', context)
