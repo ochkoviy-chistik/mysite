@@ -63,13 +63,31 @@ def activate_email(request, user, to_email):
 
 
 def index(request):
-    context = {'docs': Doc.objects.all()}
+    context = {
+        'docs': Doc.objects.all().order_by('-pk')
+    }
     return render(request, 'main.html', context)
 
 
 def profile(request):
     context = {}
     return render(request, 'profile.html', context)
+
+
+def doc_page(request, pk):
+    doc = Doc.objects.get(pk=pk)
+    context = {
+        'doc': doc
+    }
+
+    if request.method == 'POST' and request.POST.get('delete'):
+        disk_invoker = DiskInvoker(token=DISK_TOKEN)
+        disk_invoker.run('delete', path=doc.path)
+        doc.delete()
+
+        return redirect('/')
+
+    return render(request, 'doc_page.html', context)
 
 
 def sign_up(request):
@@ -112,6 +130,7 @@ def create_docs(request):
             doc = Doc(
                 title=form.cleaned_data.get('title'),
                 link=info['public_url'],
+                path=path,
                 description=form.cleaned_data.get('description'),
                 author=request.user,
                 date=datetime.datetime.now()

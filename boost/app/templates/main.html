@@ -28,7 +28,6 @@
     </header>
 <main>
     {% for doc in docs %}
-    <a href="{{doc.link}}">
         <div class="card mb-3" style="max-width: 540px;">
       <div class="row g-0">
         <div class="col-md-4">
@@ -36,7 +35,9 @@
         </div>
         <div class="col-md-8">
           <div class="card-body">
-            <h5 class="card-title">{{doc.title}}</h5>
+              <a href="/document{{doc.pk}}">
+                  <h5 class="card-title">{{doc.title}}</h5>
+              </a>
             <p class="card-text">{{doc.description}}</p>
             <p class="card-text"><small class="text-body-secondary">{{doc.author}}</small></p>
               <p class="card-text"><small class="text-body-secondary">{{doc.date}}</small></p>
@@ -44,7 +45,6 @@
         </div>
       </div>
     </div>
-    </a>
     {% endfor %}
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>

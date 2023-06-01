@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{doc.title}}</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+</head>
+<body>
+    <main class="d-flex justify-content-center">
+        <section class="col-6 d-flex justify-content-between">
+                    <section class="border border-1">
+                        <h5>{{doc.title}}</h5>
+                        <img src="{{doc.preview.url}}" class="mb-3" alt="">
+                        <p>{{doc.description}}</p>
+                        <section class="d-flex justify-content-between">
+                            <p>{{doc.author}}</p>
+                            <p>{{doc.date}}</p>
+                        </section>
+                        <section class="d-flex justify-content-center">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <a href="{{doc.link}}" class="btn btn-primary mb-2">
+                                    Перейти на диск
+                                </a>
+                                {% if user == doc.author %}
+                                    <a href="{{doc.link}}" class="btn btn-secondary mb-2">
+                                        Заменить
+                                    </a>
+                                    <input type="submit" name="delete" class="btn btn-danger mb-2" value="Удалить">
+                                {% endif %}
+                            </form>
+                        </section>
+                    </section>
+                    <section>
+
+                    </section>
+        </section>
+    </main>
+</body>
+</html>
