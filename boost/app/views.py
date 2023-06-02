@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from accounts import forms
 
 from app.disk_invoker import unique_name_generator, DiskInvoker
-from app.forms import DocCreationForm
+from app.forms import DocCreationForm, DocEditForm
 from accounts.models import User
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
@@ -88,6 +88,53 @@ def doc_page(request, pk):
         return redirect('/')
 
     return render(request, 'doc_page.html', context)
+
+
+def doc_page_edit(request, pk):
+    context = {}
+    doc = Doc.objects.get(pk=pk)
+
+    form = DocEditForm(
+        initial={
+            'title': doc.title,
+            'description': doc.description,
+        }
+    )
+    if request.method == 'POST':
+        form = DocEditForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            doc.title = form.cleaned_data.get('title')
+            doc.description = form.cleaned_data.get('description')
+
+            if 'preview' in request.FILES:
+                doc.preview = request.FILES['preview']
+            else:
+                doc.preview = 'media/default_images/default_document.png'
+
+            if 'file' in request.FILES:
+                disk_invoker = DiskInvoker(token=DISK_TOKEN)
+                disk_invoker.run('delete', path=doc.path)
+
+                path = DISK_PATH + unique_name_generator()
+
+                disk_invoker = DiskInvoker(token=DISK_TOKEN)
+                response_file = BytesIO(
+                    [i for i in request.FILES['file'].chunks()][0]
+                )
+                disk_invoker.run('upload', path=path, file=response_file)
+                disk_invoker.run('publish', path=path)
+
+                doc.link = disk_invoker.run('get_info', path=path)['public_url']
+                doc.path = path
+
+            doc.save()
+            return redirect('/')
+
+    context['form'] = form
+    context['doc'] = doc
+
+    return render(request, 'doc_edit.html', context)
 
 
 def sign_up(request):

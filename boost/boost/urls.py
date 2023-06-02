@@ -33,6 +33,7 @@ urlpatterns = [
 
     path('profile/', views.profile, name='profile'),
     path('document<int:pk>', views.doc_page, name='doc_page'),
+    path('document<int:pk>/edit', views.doc_page_edit, name='doc_page'),
     path('create/', views.create_docs, name='create_docs'),
 ]
 

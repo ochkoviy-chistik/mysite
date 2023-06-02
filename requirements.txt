@@ -3,5 +3,5 @@ Pillow==9.5.0
 six
 pylint==2.17.4
 coverage==7.2.7
-dotenv
+python-dotenv
 yadisk

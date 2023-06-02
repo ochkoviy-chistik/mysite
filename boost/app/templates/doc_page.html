@@ -24,7 +24,7 @@
                                     Перейти на диск
                                 </a>
                                 {% if user == doc.author %}
-                                    <a href="{{doc.link}}" class="btn btn-secondary mb-2">
+                                    <a href="/document{{doc.pk}}/edit" class="btn btn-secondary mb-2">
                                         Заменить
                                     </a>
                                     <input type="submit" name="delete" class="btn btn-danger mb-2" value="Удалить">
