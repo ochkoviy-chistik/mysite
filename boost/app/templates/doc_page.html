@@ -12,6 +12,22 @@
                     <section class="border border-1">
                         <h5>{{doc.title}}</h5>
                         <img src="{{doc.preview.url}}" class="mb-3" alt="">
+                        <div>
+                            <div class="d-flex">
+                            {% for subject in doc.subjects.all %}
+                            <span class="badge m-1" style="background-color: {{subject.color}}">
+                                {{subject.name}}
+                            </span>
+                        {% endfor %}
+                        </div>
+                        <div class="d-flex">
+                            {% for study in doc.studies.all %}
+                            <span class="badge m-1" style="background-color: {{study.color}}">
+                                {{study.level}}
+                            </span>
+                        {% endfor %}
+                        </div>
+                        </div>
                         <p>{{doc.description}}</p>
                         <section class="d-flex justify-content-between">
                             <p>{{doc.author}}</p>

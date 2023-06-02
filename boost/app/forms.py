@@ -1,4 +1,5 @@
 from django import forms
+from .tags import Subject, Study
 
 
 class DocCreationForm (forms.Form):
@@ -9,6 +10,14 @@ class DocCreationForm (forms.Form):
     )
     preview = forms.ImageField(
         required=False,
+    )
+    subjects = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Subject.objects.all(),
+    )
+    studies = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Study.objects.all(),
     )
     description = forms.CharField(
         widget=forms.Textarea,
@@ -38,6 +47,14 @@ class DocEditForm (forms.Form):
     )
     preview = forms.ImageField(
         required=False,
+    )
+    subjects = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Subject.objects.all(),
+    )
+    studies = forms.ModelMultipleChoiceField(
+        widget=forms.CheckboxSelectMultiple,
+        queryset=Study.objects.all(),
     )
     description = forms.CharField(
         widget=forms.Textarea,

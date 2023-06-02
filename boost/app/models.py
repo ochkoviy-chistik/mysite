@@ -1,6 +1,7 @@
 from django.db import models
 from boost import settings
 import datetime
+from .tags import Study, Subject
 
 # Create your models here.
 
@@ -17,6 +18,8 @@ class Doc (models.Model):
         blank=False,
         default='media/default_images/default_document.png'
     )
+    studies = models.ManyToManyField(Study)
+    subjects = models.ManyToManyField(Subject)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()
 

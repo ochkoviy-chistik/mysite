@@ -11,6 +11,7 @@ from accounts.models import User
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.http import HttpResponseForbidden
 
 from app.models import Doc
 from app.tokens import account_activation_token
@@ -94,10 +95,15 @@ def doc_page_edit(request, pk):
     context = {}
     doc = Doc.objects.get(pk=pk)
 
+    if request.user.username != doc.author:
+        return HttpResponseForbidden()
+
     form = DocEditForm(
         initial={
             'title': doc.title,
             'description': doc.description,
+            'subjects': doc.subjects.all(),
+            'studies': doc.studies.all(),
         }
     )
     if request.method == 'POST':
@@ -129,6 +135,10 @@ def doc_page_edit(request, pk):
                 doc.path = path
 
             doc.save()
+
+            doc.studies.set(form.cleaned_data.get('studies'))
+            doc.subjects.set(form.cleaned_data.get('subjects'))
+
             return redirect('/')
 
     context['form'] = form
@@ -187,6 +197,8 @@ def create_docs(request):
                 doc.preview = request.FILES['preview']
 
             doc.save()
+            doc.studies.set(form.cleaned_data.get('studies'))
+            doc.subjects.set(form.cleaned_data.get('subjects'))
 
             return redirect('/')
 
