@@ -95,7 +95,7 @@ def doc_page_edit(request, pk):
     context = {}
     doc = Doc.objects.get(pk=pk)
 
-    if request.user.username != doc.author:
+    if request.user.username != doc.author.username:
         return HttpResponseForbidden()
 
     form = DocEditForm(
