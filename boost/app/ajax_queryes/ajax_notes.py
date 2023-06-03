@@ -39,7 +39,7 @@ def like_post(request):
             Like(doc=doc, author=request.user).save()
             likes += 1
         else:
-            like.delete()
+            user_like.delete()
             likes -= 1
 
         dislikes = Dislike.objects.filter(doc=doc).count()
@@ -67,7 +67,7 @@ def dislike_post(request):
             Dislike(doc=doc, author=request.user).save()
             dislikes += 1
         else:
-            dislike.delete()
+            user_dislike.delete()
             dislikes -= 1
 
         likes = Like.objects.filter(doc=doc).count()
