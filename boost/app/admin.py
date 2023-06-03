@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import Doc
 from .tags import Study, Subject
-from .notes import Like, Dislike
+from .notes import Like, Dislike, Comment
 
 
 # Register your models here.
@@ -32,3 +32,8 @@ class LikeAdmin (admin.ModelAdmin):
 @admin.register(Dislike)
 class DislikeAdmin (admin.ModelAdmin):
     list_display = ['doc', 'author', ]
+
+
+@admin.register(Comment)
+class CommentAdmin (admin.ModelAdmin):
+    list_display = ['text', 'doc', 'author', ]

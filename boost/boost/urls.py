@@ -40,6 +40,7 @@ urlpatterns = [
     path('document<int:pk>/getdata', ajax_notes.get_data, name='data_get_ajax'),
     path('documents/postlikedata', ajax_notes.like_post, name='like_post_ajax'),
     path('documents/postdislikedata', ajax_notes.dislike_post, name='dislike_post_ajax'),
+    path('documents/postcommentdata', ajax_notes.comment_post, name='comment_post_ajax'),
 ]
 
 if settings.DEBUG:

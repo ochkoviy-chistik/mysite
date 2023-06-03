@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from accounts import forms
 
 from app.disk_invoker import unique_name_generator, DiskInvoker
-from app.forms import DocCreationForm, DocEditForm
+from app.forms import DocCreationForm, DocEditForm, CommentForm
 from accounts.models import User
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
@@ -81,12 +81,19 @@ def doc_page(request, pk):
         'doc': doc
     }
 
-    if request.method == 'POST' and request.POST.get('delete'):
-        disk_invoker = DiskInvoker(token=DISK_TOKEN)
-        disk_invoker.run('delete', path=doc.path)
-        doc.delete()
+    form = CommentForm()
 
-        return redirect('/')
+    if request.method == 'POST':
+        if request.POST.get('delete'):
+            disk_invoker = DiskInvoker(token=DISK_TOKEN)
+            disk_invoker.run('delete', path=doc.path)
+            doc.delete()
+            return redirect('/')
+
+        if form.is_valid():
+            pass
+
+    context['form'] = form
 
     return render(request, 'doc_page.html', context)
 

@@ -39,3 +39,13 @@ class Dislike (models.Model):
 
     def __str__(self):
         return f'{self.author} оценил документ "{self.doc}"'
+
+
+class Comment (models.Model):
+    text = models.CharField(max_length=511)
+    doc = models.ForeignKey(Doc, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField()
+
+    def __str__(self):
+        return self.text

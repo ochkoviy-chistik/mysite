@@ -75,3 +75,10 @@ class DocEditForm (forms.Form):
                 raise forms.ValidationError('недопустимый тип файла')
 
             return file
+
+
+class CommentForm (forms.Form):
+    comment = forms.CharField(
+        widget=forms.TextInput,
+        max_length=511
+    )

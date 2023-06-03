@@ -1,7 +1,9 @@
+import datetime
+
 from django.http import JsonResponse
 import json
 
-from app.notes import Like, Dislike
+from app.notes import Like, Dislike, Comment
 from app.models import Doc
 
 
@@ -12,10 +14,28 @@ def get_data(request, pk):
     dislikes = Dislike.objects.filter(
         doc__pk=pk
     )
+    comments_response = Comment.objects.filter(
+        doc__pk=pk
+    ).order_by('-pk')
+
+    comments = {
+        'count': comments_response.count(),
+        'data': [],
+    }
+
+    for comment in comments_response:
+        comments['data'].append(
+            {
+                'text': comment.text,
+                'author': str(comment.author),
+                'date': comment.date,
+            }
+        )
 
     context = {
         'likes': likes.count(),
         'dislikes': dislikes.count(),
+        'comments': comments,
         'is_liked': likes.filter(author=request.user).exists(),
         'is_disliked': dislikes.filter(author=request.user).exists(),
     }
@@ -74,6 +94,27 @@ def dislike_post(request):
 
         doc.likes = likes
         doc.dislikes = dislikes
+        doc.save()
+
+    return JsonResponse({})
+
+
+def comment_post(request):
+
+    if request.method == 'POST':
+        data = json.load(request)
+
+        doc = Doc.objects.get(pk=data['doc'])
+
+        comment = Comment(
+            text=data['text'],
+            doc=doc,
+            author=request.user,
+            date=datetime.datetime.now()
+        )
+        comment.save()
+
+        doc.comments = Comment.objects.filter(doc=doc).count()
         doc.save()
 
     return JsonResponse({})

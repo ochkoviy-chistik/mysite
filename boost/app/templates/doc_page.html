@@ -6,7 +6,7 @@
     <title>{{doc.title}}</title>
     <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
 </head>
-<body onload="loadData()">
+<body onload="load()">
     <main class="d-flex justify-content-center">
         <section class="col-6 d-flex justify-content-between">
                     <section class="border border-1">
@@ -34,7 +34,7 @@
                                     {% csrf_token %}
                                     <button class="btn" name="like" id="likeBtn" onclick="postLike()"></button>
                                     <button class="btn" id="dislikeBtn" name="dislike" onclick="postDislike()"></button>
-                                    <button class="btn">{% include 'note_icons/comment.html' %}</button>
+                                    <button class="btn" id="commentBtn"></button>
                                 </form>
                             </div>
                         </div>
@@ -59,12 +59,25 @@
                         </section>
                         <a href="/">Домой</a>
                     </section>
-                    <section>
-
+                    <section class="border border-1">
+                        <h2>Комментарии:</h2>
+                        <div class="align-bottom">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="text" id="messageInput" name="messageInput">
+                                <input class="btn btn-primary" type="button" value="Отправить" onclick="postComment();setTimeout(loadData, 500)">
+                            </form>
+                        </div>
+                        <hr>
+                        <div id="commentBlock">
+                            
+                        </div>
                     </section>
         </section>
     </main>
     <script>
+        let DATA = null;
+
         function loadData() {
             let xhr = new XMLHttpRequest();
             xhr.open(method="GET", url="/document{{doc.pk}}/getdata", async=true);
@@ -97,6 +110,47 @@
                     <span id="dislikeNum">${-data['dislikes']}</span>
                     `;
                 }
+
+                commentBtn.innerHTML = `
+                {% include 'note_icons/comment.html' %}
+                <span id="dislikeNum">${data['comments']['count']}</span>
+                `;
+                
+                if (DATA != data['comments']['count']) {
+                    commentBlock.innerHTML = '';
+                    let comments = data['comments']['data'];
+
+                    for (let i = 0; i < comments.length; ++i) {
+                        let comment = document.createElement('div');
+                        let commentBottom = document.createElement('div');
+                        let textMessage = document.createElement('p');
+                        let author = document.createElement('span');
+                        let date = document.createElement('span');
+
+                        comment.id = `comment${i}`;
+                        commentBottom.id = `commentBottom${i}`;
+
+                        comment.className = 'm-1 p-1 border border-1 rounded text-emphasis-dark';
+                        commentBottom.className = 'd-flex justify-content-between';
+
+                        if ('{{request.user}}' == comments[i]['author']) {
+                            comment.className += ' bg-info-subtle';
+                        }
+
+                        textMessage.innerHTML = comments[i]['text'];
+                        author.innerHTML = comments[i]['author'];
+                        date.innerHTML = comments[i]['date'];
+
+                        document.querySelector(`#commentBlock`).appendChild(comment);
+                        document.querySelector(`#${comment.id}`).appendChild(textMessage);
+                        document.querySelector(`#${comment.id}`).appendChild(commentBottom);
+                        document.querySelector(`#${commentBottom.id}`).appendChild(date);
+                        document.querySelector(`#${commentBottom.id}`).appendChild(author);
+                    }
+                }
+                
+                DATA = data['comments']['count'];
+
             }
 
             xhr.send();
@@ -129,6 +183,26 @@
             }
 
             xhr.send(JSON.stringify(response));
+        }
+
+        function postComment() {
+            let xhr = new XMLHttpRequest();
+            xhr.open(method="POST", url="/documents/postcommentdata", async=true);
+
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            xhr.setRequestHeader('X-CSRFToken', "{{ csrf_token }}");
+
+            let response = {
+                'text': messageInput.value,
+                "doc": "{{doc.pk}}",
+            }
+            messageInput.value = '';
+            xhr.send(JSON.stringify(response));
+        }
+
+        function load() {
+            loadData();
+            setInterval(loadData, 10000);
         }
     </script>
 </body>
