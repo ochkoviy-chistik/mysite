@@ -21,7 +21,7 @@
     {% if not request.user.is_authenticated %}
     <a href="/login">Войти</a>
     {% else %}
-    <a href="/profile">{{request.user}}</a>
+    <a href="/id{{request.user.pk}}">{{request.user}}</a>
     <a href="/create">Добавить</a>
     <a href="/logout">Выйти</a>
     {% endif %}

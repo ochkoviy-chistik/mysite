@@ -70,8 +70,15 @@ def index(request):
     return render(request, 'main.html', context)
 
 
-def profile(request):
+def profile(request, pk):
     context = {}
+    user_profile = User.objects.get(pk=pk)
+    docs = Doc.objects.filter(
+        author=user_profile
+    )
+
+    context['user_profile'] = user_profile
+    context['docs'] = docs
     return render(request, 'profile.html', context)
 
 

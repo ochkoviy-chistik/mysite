@@ -3,10 +3,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Профиль</title>
+    <title>{{user_profile}}</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/profile.css' %}">
 </head>
 <body>
-    <h2>{{user}}</h2>
-    <img src="{{user.avatar.url}}" alt="">
+    <main>
+        <section class="d-flex justify-content-center mb-2">
+            <section>
+                <img class="rounded-circle" id="avatar" src="{{user_profile.avatar.url}}" alt="">
+                <h2 class="text-center">{{user_profile}}</h2>
+                <h4 class="text-center">@{{user_profile.username}}</h4>
+                <h2>Всего документов: {{docs.count}}</h2>
+            </section>
+        </section>
+
+            <section class="d-flex justify-content-center flex-wrap">
+                {% for doc in docs %}
+                    <div class="card m-2 p-2" style="max-width: 540px;">
+                        <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{{doc.preview.url}}" class="img-fluid rounded-start" alt="">
+                        </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <a href="/document{{doc.pk}}">
+                                        <h5 class="card-title">{{doc.title}}</h5>
+                                        </a>
+                                        <div class="d-flex flex-wrap">
+                                            <p class="m-1">{% include 'note_icons/caret_up_fill.html' %} {{doc.likes}}</p>
+                                            <p class="m-1">{% include 'note_icons/caret_down_fill.html' %} {{doc.dislikes}}</p>
+                                            <p class="m-1">{% include 'note_icons/comment.html' %} {{doc.comments}}</p>
+                                        </div>
+                                    </div>
+                                        <p class="card-text">{{doc.description}}</p>
+                                        <p class="card-text"><small class="text-body-secondary">{{doc.author}}</small></p>
+                                        <p class="card-text"><small class="text-body-secondary">{{doc.date}}</small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                {% endfor %}
+            </section>
+    </main>
 </body>
 </html>

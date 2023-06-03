@@ -40,7 +40,7 @@
                         </div>
                         <p>{{doc.description}}</p>
                         <section class="d-flex justify-content-between">
-                            <p>{{doc.author}}</p>
+                            <a href="/id{{doc.author.pk}}">{{doc.author}}</a>
                             <p>{{doc.date}}</p>
                         </section>
                         <section class="d-flex justify-content-center">
@@ -76,7 +76,7 @@
         </section>
     </main>
     <script>
-        let DATA = null;
+        let DATA = 0;
 
         function loadData() {
             let xhr = new XMLHttpRequest();
@@ -115,9 +115,15 @@
                 {% include 'note_icons/comment.html' %}
                 <span id="dislikeNum">${data['comments']['count']}</span>
                 `;
+
+                commentBlock.innerHTML = '';
+                if (data['comments']['count'] == 0) {
+                    let emptyTitle = document.createElement('h2');
+                    emptyTitle.innerHTML = 'Пока здесь пусто!';
+                    document.querySelector('#commentBlock').appendChild(emptyTitle); 
+                }
                 
                 if (DATA != data['comments']['count']) {
-                    commentBlock.innerHTML = '';
                     let comments = data['comments']['data'];
 
                     for (let i = 0; i < comments.length; ++i) {
