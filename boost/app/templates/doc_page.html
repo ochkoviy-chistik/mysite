@@ -6,27 +6,37 @@
     <title>{{doc.title}}</title>
     <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
 </head>
-<body>
+<body onload="loadData()">
     <main class="d-flex justify-content-center">
         <section class="col-6 d-flex justify-content-between">
                     <section class="border border-1">
                         <h5>{{doc.title}}</h5>
                         <img src="{{doc.preview.url}}" class="mb-3" alt="">
-                        <div>
-                            <div class="d-flex">
-                            {% for subject in doc.subjects.all %}
-                            <span class="badge m-1" style="background-color: {{subject.color}}">
-                                {{subject.name}}
-                            </span>
-                        {% endfor %}
-                        </div>
-                        <div class="d-flex">
-                            {% for study in doc.studies.all %}
-                            <span class="badge m-1" style="background-color: {{study.color}}">
-                                {{study.level}}
-                            </span>
-                        {% endfor %}
-                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <div class="d-flex">
+                                    {% for subject in doc.subjects.all %}
+                                    <span class="badge m-1" style="background-color: {{subject.color}}">
+                                        {{subject.name}}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                                <div class="d-flex">
+                                    {% for study in doc.studies.all %}
+                                    <span class="badge m-1" style="background-color: {{study.color}}">
+                                        {{study.level}}
+                                    </span>
+                                {% endfor %}
+                                </div>
+                            </div>
+                            <div>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn" name="like" id="likeBtn" onclick="postLike()"></button>
+                                    <button class="btn" id="dislikeBtn" name="dislike" onclick="postDislike()"></button>
+                                    <button class="btn">{% include 'note_icons/comment.html' %}</button>
+                                </form>
+                            </div>
                         </div>
                         <p>{{doc.description}}</p>
                         <section class="d-flex justify-content-between">
@@ -47,11 +57,79 @@
                                 {% endif %}
                             </form>
                         </section>
+                        <a href="/">Домой</a>
                     </section>
                     <section>
 
                     </section>
         </section>
     </main>
+    <script>
+        function loadData() {
+            let xhr = new XMLHttpRequest();
+            xhr.open(method="GET", url="/document{{doc.pk}}/getdata", async=true);
+            
+            xhr.onload = function() {
+                let data = JSON.parse(xhr.response);
+
+                if (data['is_liked']) {
+                    likeBtn.innerHTML = `
+                    {% include 'note_icons/caret_up_fill.html' %}
+                    <span id="likeNum">${data['likes']}</span>
+                    `;
+                }
+                else {
+                    likeBtn.innerHTML = `
+                    {% include 'note_icons/caret_up.html' %}
+                    <span id="likeNum">${data['likes']}</span>
+                    `;
+                }
+
+                if (data['is_disliked']) {
+                    dislikeBtn.innerHTML = `
+                    {% include 'note_icons/caret_down_fill.html' %}
+                    <span id="dislikeNum">${-data['dislikes']}</span>
+                    `;
+                }
+                else {
+                    dislikeBtn.innerHTML = `
+                    {% include 'note_icons/caret_down.html' %}
+                    <span id="dislikeNum">${-data['dislikes']}</span>
+                    `;
+                }
+            }
+
+            xhr.send();
+
+        }
+
+        function postLike() {
+            let xhr = new XMLHttpRequest();
+            xhr.open(method="POST", url="/documents/postlikedata", async=true);
+
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            xhr.setRequestHeader('X-CSRFToken', "{{ csrf_token }}");
+
+            let response = {
+                "doc": "{{doc.pk}}",
+            }
+
+            xhr.send(JSON.stringify(response));
+        }
+
+        function postDislike() {
+            let xhr = new XMLHttpRequest();
+            xhr.open(method="POST", url="/documents/postdislikedata", async=true);
+
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            xhr.setRequestHeader('X-CSRFToken', "{{ csrf_token }}");
+
+            let response = {
+                "doc": "{{doc.pk}}",
+            }
+
+            xhr.send(JSON.stringify(response));
+        }
+    </script>
 </body>
 </html>

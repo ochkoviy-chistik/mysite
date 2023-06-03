@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from app import views
+from app.ajax_queryes import ajax_notes
 
 from boost import settings
 
@@ -35,6 +36,10 @@ urlpatterns = [
     path('document<int:pk>', views.doc_page, name='doc_page'),
     path('document<int:pk>/edit', views.doc_page_edit, name='doc_page'),
     path('create/', views.create_docs, name='create_docs'),
+
+    path('document<int:pk>/getdata', ajax_notes.get_data, name='data_get_ajax'),
+    path('documents/postlikedata', ajax_notes.like_post, name='like_post_ajax'),
+    path('documents/postdislikedata', ajax_notes.dislike_post, name='dislike_post_ajax'),
 ]
 
 if settings.DEBUG:
