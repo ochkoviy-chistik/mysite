@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from app.models import Doc
 
 
 # Create your models here.
@@ -92,6 +93,7 @@ class User (AbstractBaseUser):
         verbose_name='last name',
         max_length=30
     )
+    bookmarks = models.ManyToManyField(Doc)
 
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)

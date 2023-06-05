@@ -5,15 +5,21 @@
     <meta charset="UTF-8">
     <title>{{doc.title}}</title>
     <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/doc_page.css' %}">
 </head>
 <body onload="load()">
+    <header>
+        {% include 'menu.html' %}
+    </header>
     <main class="d-flex justify-content-center">
         <section class="col-6 d-flex justify-content-between">
-                    <section class="border border-1">
-                        <h5>{{doc.title}}</h5>
-                        <img src="{{doc.preview.url}}" class="mb-3" alt="">
-                        <div class="d-flex justify-content-between">
-                            <div>
+                    <section id="docCard" class="rounded p-1">
+                        <section class="">
+                            <div class="d-flex justify-content-between">
+                                <h3>{{doc.title}}</h3>
+                                <button class="btn" name="bookmark" id="bookmarkBtn" onclick="postBookmark();setTimeout(loadData, 50)"></button>
+                            </div>
+                            <div class="mb-2">
                                 <div class="d-flex">
                                     {% for subject in doc.subjects.all %}
                                     <span class="badge m-1" style="background-color: {{subject.color}}">
@@ -29,43 +35,43 @@
                                 {% endfor %}
                                 </div>
                             </div>
-                            <div>
+                            <img src="{{doc.preview.url}}" id="docImage" class="mb-3 " alt="">
+                                <div>
+                                        <div class="d-flex flex-wrap">
+                                            <button class="btn" name="like" id="likeBtn" onclick="postLike();setTimeout(loadData, 50)"></button>
+                                            <button class="btn" id="dislikeBtn" name="dislike" onclick="postDislike();setTimeout(loadData, 50)"></button>
+                                            <button class="btn" id="commentBtn"></button>
+                                        </div>
+                                </div>
+                            <p>{{doc.description}}</p>
+                            <section class="d-flex justify-content-between">
+                                <a href="/id{{doc.author.pk}}">{{doc.author}}</a>
+                                <p>{{doc.date}}</p>
+                            </section>
+                            <section class="d-flex justify-content-center">
                                 <form method="POST">
                                     {% csrf_token %}
-                                    <button class="btn" name="like" id="likeBtn" onclick="postLike()"></button>
-                                    <button class="btn" id="dislikeBtn" name="dislike" onclick="postDislike()"></button>
-                                    <button class="btn" id="commentBtn"></button>
-                                </form>
-                            </div>
-                        </div>
-                        <p>{{doc.description}}</p>
-                        <section class="d-flex justify-content-between">
-                            <a href="/id{{doc.author.pk}}">{{doc.author}}</a>
-                            <p>{{doc.date}}</p>
-                        </section>
-                        <section class="d-flex justify-content-center">
-                            <form method="POST">
-                                {% csrf_token %}
-                                <a href="{{doc.link}}" class="btn btn-primary mb-2">
-                                    Перейти на диск
-                                </a>
-                                {% if user == doc.author %}
-                                    <a href="/document{{doc.pk}}/edit" class="btn btn-secondary mb-2">
-                                        Заменить
+                                    <a href="{{doc.link}}" class="btn btn-primary mb-2">
+                                        Перейти на диск
                                     </a>
-                                    <input type="submit" name="delete" class="btn btn-danger mb-2" value="Удалить">
-                                {% endif %}
-                            </form>
+                                    {% if user == doc.author %}
+                                        <a href="/document{{doc.pk}}/edit" class="btn btn-secondary mb-2">
+                                            Заменить
+                                        </a>
+                                        <input type="submit" name="delete" class="btn btn-danger mb-2" value="Удалить">
+                                    {% endif %}
+                                </form>
+                            </section>
+                            <a href="/">Домой</a>
                         </section>
-                        <a href="/">Домой</a>
                     </section>
-                    <section class="border border-1">
+                    <section class="border border-1" id="commentsSection">
                         <h2>Комментарии:</h2>
                         <div class="align-bottom">
                             <form method="POST">
                                 {% csrf_token %}
                                 <input type="text" id="messageInput" name="messageInput">
-                                <input class="btn btn-primary" type="button" value="Отправить" onclick="postComment();setTimeout(loadData, 500)">
+                                <input class="btn btn-primary" type="button" value="Отправить" onclick="postComment();setTimeout(loadData, 50)">
                             </form>
                         </div>
                         <hr>
@@ -111,19 +117,30 @@
                     `;
                 }
 
+                if (!data['bookmark']) {
+                    bookmarkBtn.innerHTML = `{% include 'note_icons/bookmark.html' %}`
+                }
+                else {
+                    bookmarkBtn.innerHTML = `{% include 'note_icons/bookmark_fill.html' %}`
+                }
+
                 commentBtn.innerHTML = `
                 {% include 'note_icons/comment.html' %}
                 <span id="dislikeNum">${data['comments']['count']}</span>
                 `;
 
-                commentBlock.innerHTML = '';
                 if (data['comments']['count'] == 0) {
+                    commentBlock.innerHTML = '';
                     let emptyTitle = document.createElement('h2');
+
+                    emptyTitle.className = 'text-center';
                     emptyTitle.innerHTML = 'Пока здесь пусто!';
+
                     document.querySelector('#commentBlock').appendChild(emptyTitle); 
                 }
                 
                 if (DATA != data['comments']['count']) {
+                    commentBlock.innerHTML = '';
                     let comments = data['comments']['data'];
 
                     for (let i = 0; i < comments.length; ++i) {
@@ -206,10 +223,25 @@
             xhr.send(JSON.stringify(response));
         }
 
+        function postBookmark() {
+            let xhr = new XMLHttpRequest();
+            xhr.open(method="POST", url="/documents/postbookmarkdata", async=true);
+
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            xhr.setRequestHeader('X-CSRFToken', "{{ csrf_token }}");
+
+            let response = {
+                "doc": "{{doc.pk}}",
+            }
+
+            xhr.send(JSON.stringify(response));
+        }
+
         function load() {
             loadData();
             setInterval(loadData, 10000);
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>

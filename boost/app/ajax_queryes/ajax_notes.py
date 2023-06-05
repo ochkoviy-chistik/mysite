@@ -17,6 +17,9 @@ def get_data(request, pk):
     comments_response = Comment.objects.filter(
         doc__pk=pk
     ).order_by('-pk')
+    bookmark = request.user.bookmarks.filter(
+        pk=pk
+    ).exists()
 
     comments = {
         'count': comments_response.count(),
@@ -36,6 +39,7 @@ def get_data(request, pk):
         'likes': likes.count(),
         'dislikes': dislikes.count(),
         'comments': comments,
+        'bookmark': bookmark,
         'is_liked': likes.filter(author=request.user).exists(),
         'is_disliked': dislikes.filter(author=request.user).exists(),
     }
@@ -116,5 +120,23 @@ def comment_post(request):
 
         doc.comments = Comment.objects.filter(doc=doc).count()
         doc.save()
+
+    return JsonResponse({})
+
+
+def bookmark_post(request):
+
+    if request.method == 'POST':
+        data = json.load(request)
+        doc = Doc.objects.get(pk=int(data['doc']))
+
+        chosen_bookmarks = request.user.bookmarks.filter(pk=doc.pk)
+
+        if chosen_bookmarks.exists():
+            for bookmark in chosen_bookmarks:
+                request.user.bookmarks.remove(bookmark)
+        else:
+            bookmarks = request.user.bookmarks
+            bookmarks.set(list(bookmarks.all()) + [doc])
 
     return JsonResponse({})

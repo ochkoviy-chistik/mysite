@@ -1,0 +1,36 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+          {% if request.path == '/' %}
+          <a class="navbar-brand" href="#">BOOST!</a>
+          {% else %}
+          <a class="navbar-brand" href="/">BOOST!</a>
+          {% endif %}
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="d-flex justify-content-end collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+              {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                  <a class="nav-link" href="/create">Добавить</a>
+                </li>
+              <div class="dropdown-center">
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{request.user}}
+                  </a>
+                    <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="/id{{request.user.pk}}">Аккаунт</a></li>
+                    <li><a class="dropdown-item" href="/logout">Выйти</a></li>
+                  </ul>
+                </li>
+              </div>
+              {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Войти</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </nav>

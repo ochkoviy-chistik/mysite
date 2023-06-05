@@ -26,7 +26,7 @@ class UserAdmin(BaseUserAdmin):
             'Account', {'fields': ('email', 'password', 'is_active')}
          ),
         (
-            'Personal info', {'fields': ('username', 'first_name', 'last_name',  'avatar', )}
+            'Personal info', {'fields': ('username', 'first_name', 'last_name',  'avatar', 'bookmarks')}
          ),
         (
             'Permissions', {'fields': ('staff', 'admin', )}
@@ -43,7 +43,7 @@ class UserAdmin(BaseUserAdmin):
     )
     search_fields = ['email', 'username', 'first_name', 'last_name']
     ordering = ['email']
-    filter_horizontal = ()
+    filter_horizontal = ['bookmarks']
 
 
 admin.site.register(User, UserAdmin)
