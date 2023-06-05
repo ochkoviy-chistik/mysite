@@ -82,6 +82,14 @@ def profile(request, pk):
     return render(request, 'profile.html', context)
 
 
+def bookmarks(request, pk):
+    context = {
+        'docs': request.user.bookmarks.all()
+    }
+
+    return render(request, 'bookmarked_docs.html',context)
+
+
 def doc_page(request, pk):
     doc = Doc.objects.get(pk=pk)
     context = {
