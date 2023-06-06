@@ -45,6 +45,7 @@ urlpatterns = [
     path('documents/postdislikedata', ajax_notes.dislike_post, name='dislike_post_ajax'),
     path('documents/postcommentdata', ajax_notes.comment_post, name='comment_post_ajax'),
     path('documents/postbookmarkdata', ajax_notes.bookmark_post, name='bookmark_post_ajax'),
+    path('documents/deletecomment', ajax_notes.delete_comment, name='delete_comment_ajax'),
 ]
 
 if settings.DEBUG:

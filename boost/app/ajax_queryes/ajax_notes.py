@@ -29,6 +29,7 @@ def get_data(request, pk):
     for comment in comments_response:
         comments['data'].append(
             {
+                'pk': comment.pk,
                 'text': comment.text,
                 'author': str(comment.author),
                 'date': comment.date,
@@ -138,5 +139,18 @@ def bookmark_post(request):
         else:
             bookmarks = request.user.bookmarks
             bookmarks.set(list(bookmarks.all()) + [doc])
+
+    return JsonResponse({})
+
+
+def delete_comment(request):
+
+    if request.method == 'POST':
+        data = json.load(request)
+
+        Comment.objects.get(pk=data['comment']).delete()
+        doc = Doc.objects.get(pk=data['doc'])
+        doc.comments -= 1
+        doc.save()
 
     return JsonResponse({})
