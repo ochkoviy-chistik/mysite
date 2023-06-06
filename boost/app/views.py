@@ -3,10 +3,11 @@ from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
+from django.db.models import Q
 from accounts import forms
 
 from app.disk_invoker import unique_name_generator, DiskInvoker
-from app.forms import DocCreationForm, DocEditForm, CommentForm
+from app.forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm
 from accounts.models import User
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
@@ -64,9 +65,43 @@ def activate_email(request, user, to_email):
 
 
 def index(request):
-    context = {
-        'docs': Doc.objects.all().order_by('-pk')
-    }
+    context = {}
+    sort_types = ['-likes', '-dislikes', 'date', '-date']
+
+    if request.GET.get('drop'):
+        return redirect('/')
+
+    studies = list(request.GET.getlist('studies'))
+    subjects = list(request.GET.getlist('subjects'))
+
+    sort_type_get = request.GET.get('sort_type')
+
+    if sort_type_get:
+        sort_type = sort_types[int(sort_type_get)-1]
+    else:
+        sort_type = '-pk'
+
+    query_studies = Q()
+    query_subjects = Q()
+
+    if subjects:
+        query_subjects = Q(subjects__in=subjects)
+    if studies:
+        query_studies = Q(studies__in=studies)
+
+    docs = Doc.objects.filter(
+        query_subjects & query_studies
+    ).order_by(sort_type)
+
+    context['form'] = TagsSortForm(
+        initial={
+            'studies': studies,
+            'sort_type': sort_type_get,
+            'subjects': subjects,
+        }
+    )
+    context['docs'] = docs
+
     return render(request, 'main.html', context)
 
 
@@ -82,12 +117,42 @@ def profile(request, pk):
     return render(request, 'profile.html', context)
 
 
-def bookmarks(request, pk):
+def profile_edit(request, pk):
+    context = {}
+
+    if request.user.pk != pk:
+        return HttpResponseForbidden()
+
+    if request.method == 'POST':
+        form = forms.UserChangeForm(request.POST, request.FILES, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(request, 'Изменения успешно сохранены!')
+
+            return redirect('/')
+
+    else:
+        form = forms.UserChangeForm(
+            initial={
+                'username': request.user.username,
+                'first_name': request.user.first_name,
+                'last_name': request.user.last_name,
+            }
+        )
+
+    context['form'] = form
+
+    return render(request, 'profile_edit.html', context)
+
+
+def bookmarks(request):
     context = {
         'docs': request.user.bookmarks.all()
     }
 
-    return render(request, 'bookmarked_docs.html',context)
+    return render(request, 'bookmarked_docs.html', context)
 
 
 def doc_page(request, pk):

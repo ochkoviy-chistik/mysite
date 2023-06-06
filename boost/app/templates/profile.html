@@ -9,15 +9,18 @@
     <link rel="stylesheet" href="{% static 'styles/doc_page.css' %}">
 </head>
 <body>
-    <header>
+    <header class="mb-4">
         {% include 'menu.html' %}
     </header>
     <main>
-        <section class="d-flex justify-content-center mb-2">
-            <section>
+        <section class="d-flex justify-content-center">
+            <section class="d-flex align-items-center flex-column mb-4 p-2 bg-body rounded">
                 <img class="rounded-circle" id="avatar" src="{{user_profile.avatar.url}}" alt="">
                 <h2 class="text-center">{{user_profile}}</h2>
                 <h4 class="text-center">@{{user_profile.username}}</h4>
+                {% if user_profile == user %}
+                    <a class="btn btn-warning" href="edit/">Редактировать</a>
+                {% endif %}
                 <h2>Всего документов: {{docs.count}}</h2>
             </section>
         </section>

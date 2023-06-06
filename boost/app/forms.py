@@ -82,3 +82,24 @@ class CommentForm (forms.Form):
         widget=forms.TextInput,
         max_length=511
     )
+
+
+class TagsSortForm (forms.Form):
+    subjects = forms.ModelMultipleChoiceField(
+        queryset=Subject.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    studies = forms.ModelMultipleChoiceField(
+        queryset=Study.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    sort_type = forms.ChoiceField(
+        required=False,
+        choices=[
+            ('1', 'С высокой оценкой'),
+            ('2', 'С низкой оценкой'),
+            ('3', 'Новые'),
+            ('4', 'Старые'),
+        ],
+        widget=forms.RadioSelect,
+    )

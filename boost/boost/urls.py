@@ -33,10 +33,11 @@ urlpatterns = [
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
 
     path('id<int:pk>/', views.profile, name='profile'),
-    path('id<int:pk>/bookmarks/', views.bookmarks, name='bookmarks'),
+    path('id<int:pk>/edit/', views.profile_edit, name='edit'),
+    path('bookmarks/', views.bookmarks, name='bookmarks'),
 
-    path('document<int:pk>', views.doc_page, name='doc_page'),
-    path('document<int:pk>/edit', views.doc_page_edit, name='doc_page'),
+    path('document<int:pk>/', views.doc_page, name='doc_page'),
+    path('document<int:pk>/edit/', views.doc_page_edit, name='doc_page'),
     path('create/', views.create_docs, name='create_docs'),
 
     path('document<int:pk>/getdata', ajax_notes.get_data, name='data_get_ajax'),

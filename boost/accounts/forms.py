@@ -63,6 +63,12 @@ class RegisterForm(forms.ModelForm):
         return user
 
 
+class UserChangeForm (forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'avatar', 'first_name', 'last_name']
+
+
 class UserAdminCreationForm(forms.ModelForm):
     """
     A form for creating new users. Includes all the required

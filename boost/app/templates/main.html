@@ -9,17 +9,55 @@
               crossorigin="anonymous">
 </head>
 <body>
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{message}}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
     <header>
       {% include 'menu.html' %}
+      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="GET">
+            <div class="modal-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        {{form.subjects.label}}:
+                        {{form.subjects}}
+                    </div>
+                    <div>
+                        {{form.sort_type.label}}:
+                        {{form.sort_type}}
+                    </div>
+                    <div>
+                        {{form.studies.label}}:
+                        {{form.studies}}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <input type="submit" class="btn btn-secondary" name="drop">
+              <input type="submit" class="btn btn-primary">
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 d-flex justify-content-center">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+      </div>
     </header>
 <main>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Сортровка
+      </button>
   <section class="d-flex justify-content-center flex-wrap">
     {% for doc in docs %}
         <div class="card m-2 p-2" style="max-width: 540px;">

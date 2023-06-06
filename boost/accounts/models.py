@@ -93,7 +93,10 @@ class User (AbstractBaseUser):
         verbose_name='last name',
         max_length=30
     )
-    bookmarks = models.ManyToManyField(Doc)
+    bookmarks = models.ManyToManyField(
+        Doc,
+        blank=True
+    )
 
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
