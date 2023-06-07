@@ -103,3 +103,11 @@ class TagsSortForm (forms.Form):
         ],
         widget=forms.RadioSelect,
     )
+
+
+class SearchForm (forms.Form):
+    q = forms.CharField(
+        label='Поиск по названию',
+        widget=forms.TextInput,
+        required=False
+    )

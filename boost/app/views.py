@@ -7,7 +7,7 @@ from django.db.models import Q
 from accounts import forms
 
 from app.disk_invoker import unique_name_generator, DiskInvoker
-from app.forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm
+from app.forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm, SearchForm
 from accounts.models import User
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
@@ -73,31 +73,48 @@ def index(request):
 
     studies = list(request.GET.getlist('studies'))
     subjects = list(request.GET.getlist('subjects'))
-
     sort_type_get = request.GET.get('sort_type')
+
+    query_studies = Q()
+    query_subjects = Q()
+    query_title = Q()
+    query_description = Q()
+
+    search = request.GET.get('q')
 
     if sort_type_get:
         sort_type = sort_types[int(sort_type_get)-1]
     else:
         sort_type = '-pk'
 
-    query_studies = Q()
-    query_subjects = Q()
-
     if subjects:
         query_subjects = Q(subjects__in=subjects)
+
     if studies:
         query_studies = Q(studies__in=studies)
 
+    if search:
+        query_title = Q(
+            title__contains=search
+        )
+        query_description = Q(
+            description__contains=search
+        )
+
     docs = Doc.objects.filter(
-        query_subjects & query_studies
+        query_subjects & query_studies & (query_title | query_description)
     ).order_by(sort_type)
 
-    context['form'] = TagsSortForm(
+    context['sort_form'] = TagsSortForm(
         initial={
             'studies': studies,
             'sort_type': sort_type_get,
             'subjects': subjects,
+        }
+    )
+    context['search_form'] = SearchForm(
+        initial={
+            'q': search
         }
     )
     context['docs'] = docs

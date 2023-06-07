@@ -22,22 +22,22 @@
             <div class="modal-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        {{form.subjects.label}}:
-                        {{form.subjects}}
+                        {{sort_form.subjects.label}}:
+                        {{sort_form.subjects}}
                     </div>
                     <div>
-                        {{form.sort_type.label}}:
-                        {{form.sort_type}}
+                        {{sort_form.sort_type.label}}:
+                        {{sort_form.sort_type}}
                     </div>
                     <div>
-                        {{form.studies.label}}:
-                        {{form.studies}}
+                        {{sort_form.studies.label}}:
+                        {{sort_form.studies}}
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-              <input type="submit" class="btn btn-secondary" name="drop">
-              <input type="submit" class="btn btn-primary">
+              <input type="submit" class="btn btn-secondary" name="drop" value="Сбросить">
+              <input type="submit" class="btn btn-primary" value="Сортировать">
             </div>
             </form>
           </div>
@@ -58,6 +58,11 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         Сортровка
       </button>
+      <form method="GET">
+        {{search_form}}
+        <input type="submit">
+        <input type="submit" class="btn btn-secondary" name="drop" value="Сбросить">
+      </form>
   <section class="d-flex justify-content-center flex-wrap">
     {% for doc in docs %}
         <div class="card m-2 p-2" style="max-width: 540px;">
