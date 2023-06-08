@@ -14,23 +14,24 @@
     <main>
         <section class="d-flex justify-content-center">
             <section class="loginForm border border-5 rounded m-2 p-2 bg-light">
-                {% if form.errors %}
-                <div class="alert alert-danger d-flex justify-content-between" role="alert">
-                    Неверная почта или пароль!
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger d-flex justify-content-between" role="alert">
+                            {{message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
                 {% endif %}
-                <form method="POST">
+                <form method="POST" class="d-flex flex-column">
                     {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Email address</label>
-                        {{form.username}}
+                    <div class="form-floating mb-3">
+                        {{form.email}}
+                        <label for="{{form.email.id_for_label}}">Адрес электронной почты</label>
                     </div>
-                    <div class="mb-3">
-                        <label for="inputPassword5" class="form-label">Password</label>
+                    <div class="form-floating mb-3">
                         {{form.password}}
+                        <label for="{{form.password.id_for_label}}">Пароль</label>
                     </div>
-                    
                     <input class="btn btn-primary" type="submit">
                 </form>
             </section>

@@ -7,6 +7,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.contrib.auth import authenticate, login as login_auth
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -92,6 +93,39 @@ def index(request):
     context['has_docs'] = True
 
     return render(request, 'main.html', context)
+
+
+def login(request):
+    context = {}
+
+    if request.method == 'POST':
+        form = forms.LoginForm(request.POST)
+
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+
+            user = authenticate(email=email, password=password)
+
+            if user is not None:
+
+                if user.is_active:
+                    login_auth(request, user)
+                    messages.success(request, 'Успешно!')
+                    return redirect('/')
+
+                else:
+                    messages.error(request, 'Аккаунт не активирован!')
+
+            else:
+                messages.error(request, 'Неверный логин или пароль!')
+
+    else:
+        form = forms.LoginForm()
+
+    context['form'] = form
+
+    return render(request, 'registration/login.html', context)
 
 
 def profile(request, pk):
