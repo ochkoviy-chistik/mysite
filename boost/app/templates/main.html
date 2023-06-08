@@ -26,16 +26,15 @@
 <main>
   <section class="d-flex justify-content-center flex-wrap">
     {% for doc in docs %}
-        <div class="card border-5 m-2 p-2 cardDoc" style="max-width: 540px;">
+        <div class="cardDoc card border-5 m-2 p-2" style="max-width: 540px;">
             <a href="/document{{doc.pk}}" class="cardLink">
             <div class="row g-0">
-            <div class="col-md-4 align-self-center">
+            <div class="col-md-4 p-2 align-bottom">
                 <img src="{{doc.preview.url}}" class="img-fluid rounded-start" alt="">
             </div>
                 <div class="col-md-8">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
-                            
                             <h5 class="card-title">{{doc.title}}</h5>
                             <div class="d-flex flex-wrap">
                                 <p class="m-1">{% include 'note_icons/caret_up_fill.html' %} {{doc.likes}}</p>

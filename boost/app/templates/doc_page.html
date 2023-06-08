@@ -6,68 +6,72 @@
     <title>{{doc.title}}</title>
     <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'styles/doc_page.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
 </head>
 <body onload="load()">
     <header>
         {% include 'menu.html' %}
     </header>
     <main class="d-flex justify-content-center">
-        <section class="col-6 d-flex justify-content-between">
-                    <section id="docCard" class="rounded p-1">
-                        <section class="">
-                            <div class="d-flex justify-content-between">
-                                <h3>{{doc.title}}</h3>
-                                <button class="btn" name="bookmark" id="bookmarkBtn" onclick="postBookmark();setTimeout(loadData, 50)"></button>
-                            </div>
-                            <div class="mb-2">
-                                <div class="d-flex">
-                                    {% for subject in doc.subjects.all %}
-                                    <span class="badge m-1" style="background-color: {{subject.color}}">
-                                        {{subject.name}}
-                                    </span>
-                                {% endfor %}
+        <section class="col-4">
+                    <section class="d-flex justify-content-center">
+                        <section id="docCard" class="rounded p-3 mb-4">
+                            <section class="">
+                                <div class="d-flex justify-content-between">
+                                    <h3>{{doc.title}}</h3>
+                                    <button class="btn" name="bookmark" id="bookmarkBtn" onclick="postBookmark();setTimeout(loadData, 50)"></button>
                                 </div>
-                                <div class="d-flex">
-                                    {% for study in doc.studies.all %}
-                                    <span class="badge m-1" style="background-color: {{study.color}}">
-                                        {{study.level}}
-                                    </span>
-                                {% endfor %}
+                                <div class="mb-2">
+                                    <div class="d-flex">
+                                        {% for subject in doc.subjects.all %}
+                                        <span class="badge m-1" style="background-color: {{subject.color}}">
+                                            {{subject.name}}
+                                        </span>
+                                    {% endfor %}
+                                    </div>
+                                    <div class="d-flex">
+                                        {% for study in doc.studies.all %}
+                                        <span class="badge m-1" style="background-color: {{study.color}}">
+                                            {{study.level}}
+                                        </span>
+                                    {% endfor %}
+                                    </div>
                                 </div>
-                            </div>
-                            <img src="{{doc.preview.url}}" id="docImage" class="mb-3 " alt="">
-                                <div>
-                                        <div class="d-flex flex-wrap">
-                                            <button class="btn" name="like" id="likeBtn" onclick="postLike();setTimeout(loadData, 50)"></button>
-                                            <button class="btn" id="dislikeBtn" name="dislike" onclick="postDislike();setTimeout(loadData, 50)"></button>
-                                            <button class="btn" id="commentBtn"></button>
-                                        </div>
+                                <div class="d-flex justify-content-center">
+                                    <img src="{{doc.preview.url}}" id="docImage" class="mb-3 " alt="">
                                 </div>
-                            <p>{{doc.description}}</p>
-                            <section class="d-flex justify-content-between">
-                                <a href="/id{{doc.author.pk}}">{{doc.author}}</a>
-                                <p>{{doc.date}}</p>
-                            </section>
-                            <section class="d-flex justify-content-center">
-                                <form method="POST">
-                                    {% csrf_token %}
-                                    <a href="{{doc.link}}" class="btn btn-primary mb-2">
-                                        Перейти на диск
-                                    </a>
-                                    {% if user == doc.author %}
-                                        <a href="edit/" class="btn btn-secondary mb-2">
-                                            Заменить
+                                    <div>
+                                            <div class="d-flex flex-wrap">
+                                                <button class="btn" name="like" id="likeBtn" onclick="postLike();setTimeout(loadData, 50)"></button>
+                                                <button class="btn" id="dislikeBtn" name="dislike" onclick="postDislike();setTimeout(loadData, 50)"></button>
+                                                <button class="btn" id="commentBtn"></button>
+                                            </div>
+                                    </div>
+                                <p>{{doc.description}}</p>
+                                <section class="d-flex justify-content-between">
+                                    <a href="/id{{doc.author.pk}}">{{doc.author}}</a>
+                                    <p>{{doc.date}}</p>
+                                </section>
+                                <section class="d-flex justify-content-center">
+                                    <form method="POST">
+                                        {% csrf_token %}
+                                        <a href="{{doc.link}}" class="btn btn-primary mb-2">
+                                            Перейти на диск
                                         </a>
-                                        <input type="submit" name="delete" class="btn btn-danger mb-2" value="Удалить">
-                                    {% endif %}
-                                </form>
+                                        {% if user == doc.author %}
+                                            <a href="edit/" class="btn btn-secondary mb-2">
+                                                Заменить
+                                            </a>
+                                            <input type="submit" name="delete" class="btn btn-danger mb-2" value="Удалить">
+                                        {% endif %}
+                                    </form>
+                                </section>
                             </section>
-                            <a href="/">Домой</a>
                         </section>
                     </section>
                     <section class="border border-1" id="commentsSection">
                         <h2>Комментарии:</h2>
-                        <div class="align-bottom">
+                        <div class="d-flex justify-content-center">
                             <form method="POST">
                                 {% csrf_token %}
                                 <input type="text" id="messageInput" name="messageInput">
@@ -156,7 +160,7 @@
                         commentBottom.id = `commentBottom${i}`;
                         commentBody.id = `commentBody${i}`;
 
-                        comment.className = 'm-1 p-1 border border-1 rounded text-emphasis-dark';
+                        comment.className = 'm-1 mb-4 p-1 border border-1 rounded text-emphasis-dark';
                         commentBottom.className = 'd-flex justify-content-between';
                         commentBody.className = 'd-flex justify-content-between';
 

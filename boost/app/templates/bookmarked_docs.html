@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
               rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
               crossorigin="anonymous">
+              <link rel="stylesheet" href="{% static 'styles/main.css' %}">
 </head>
 <body>
     <header>
@@ -13,32 +15,32 @@
       </header>
     <main>
         <section class="d-flex justify-content-center flex-wrap">
-          {% for doc in docs %}
-              <div class="card m-2 p-2" style="max-width: 540px;">
-                  <div class="row g-0">
-                  <div class="col-md-4 align-self-center">
-                      <img src="{{doc.preview.url}}" class="img-fluid rounded-start" alt="">
-                  </div>
-                      <div class="col-md-8">
-                          <div class="card-body">
-                              <div class="d-flex justify-content-between">
-                                  <a href="/document{{doc.pk}}">
-                                  <h5 class="card-title">{{doc.title}}</h5>
-                                  </a>
-                                  <div class="d-flex flex-wrap">
-                                      <p class="m-1">{% include 'note_icons/caret_up_fill.html' %} {{doc.likes}}</p>
-                                      <p class="m-1">{% include 'note_icons/caret_down_fill.html' %} {{doc.dislikes}}</p>
-                                      <p class="m-1">{% include 'note_icons/comment.html' %} {{doc.comments}}</p>
-                                  </div>
-                              </div>
-                                  <p class="card-text">{{doc.description}}</p>
-                                  <p class="card-text"><small class="text-body-secondary">{{doc.author}}</small></p>
-                                  <p class="card-text"><small class="text-body-secondary">{{doc.date}}</small></p>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-          {% endfor %}
+            {% for doc in docs %}
+            <div class="cardDoc card border-5 m-2 p-2" style="max-width: 540px;">
+                <a href="/document{{doc.pk}}" class="cardLink">
+                <div class="row g-0">
+                <div class="col-md-4 p-2 align-bottom">
+                    <img src="{{doc.preview.url}}" class="img-fluid rounded-start" alt="">
+                </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">{{doc.title}}</h5>
+                                <div class="d-flex flex-wrap">
+                                    <p class="m-1">{% include 'note_icons/caret_up_fill.html' %} {{doc.likes}}</p>
+                                    <p class="m-1">{% include 'note_icons/caret_down_fill.html' %} {{doc.dislikes}}</p>
+                                    <p class="m-1">{% include 'note_icons/comment.html' %} {{doc.comments}}</p>
+                                </div>
+                            </div>
+                                <p class="card-text">{{doc.description}}</p>
+                                <p class="card-text"><small class="text-body-secondary">{{doc.author}}</small></p>
+                                <p class="card-text"><small class="text-body-secondary">{{doc.date}}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                </div>
+        {% endfor %}
       </section>
       </main>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>

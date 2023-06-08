@@ -8,5 +8,9 @@ body {
 
 .cardLink {
     text-decoration: none;
-    color: #111111;
+    color: #333333;
+}
+
+img {
+    width: 100%;
 }
