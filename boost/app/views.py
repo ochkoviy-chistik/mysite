@@ -1,23 +1,25 @@
 import datetime
+from io import BytesIO
+import dotenv
+
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from accounts import forms
-
-from app.disk_invoker import unique_name_generator, DiskInvoker
-from app.forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm, SearchForm
-from accounts.models import User
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponseForbidden
 
+from accounts import forms
+from accounts.models import User
+
+from app.disk_invoker import unique_name_generator, DiskInvoker, COMMANDS
+from app.forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm, SearchForm
 from app.models import Doc
 from app.tokens import account_activation_token
-from io import BytesIO
-import dotenv
+from app.sort_docs import SortDocs
 
 
 # Create your views here.
@@ -66,58 +68,28 @@ def activate_email(request, user, to_email):
 
 def index(request):
     context = {}
-    sort_types = ['-likes', '-dislikes', 'date', '-date']
 
     if request.GET.get('drop'):
         return redirect('/')
 
-    studies = list(request.GET.getlist('studies'))
-    subjects = list(request.GET.getlist('subjects'))
-    sort_type_get = request.GET.get('sort_type')
-
-    query_studies = Q()
-    query_subjects = Q()
-    query_title = Q()
-    query_description = Q()
-
-    search = request.GET.get('q')
-
-    if sort_type_get:
-        sort_type = sort_types[int(sort_type_get)-1]
-    else:
-        sort_type = '-pk'
-
-    if subjects:
-        query_subjects = Q(subjects__in=subjects)
-
-    if studies:
-        query_studies = Q(studies__in=studies)
-
-    if search:
-        query_title = Q(
-            title__contains=search
-        )
-        query_description = Q(
-            description__contains=search
-        )
-
-    docs = Doc.objects.filter(
-        query_subjects & query_studies & (query_title | query_description)
-    ).order_by(sort_type)
+    sort_docs = SortDocs(request)
+    sort_docs.convert()
+    docs = sort_docs.make_request()
 
     context['sort_form'] = TagsSortForm(
         initial={
-            'studies': studies,
-            'sort_type': sort_type_get,
-            'subjects': subjects,
+            'studies': sort_docs.studies,
+            'sort_type': sort_docs.sort_type_get,
+            'subjects': sort_docs.subjects,
         }
     )
     context['search_form'] = SearchForm(
         initial={
-            'q': search
+            'q': sort_docs.search
         }
     )
     context['docs'] = docs
+    context['has_docs'] = True
 
     return render(request, 'main.html', context)
 
@@ -129,8 +101,30 @@ def profile(request, pk):
         author=user_profile
     )
 
+    if request.GET.get('drop'):
+        return redirect(f'/id{request.user.pk}')
+
+    sort_docs = SortDocs(request)
+    sort_docs.convert()
+    docs = sort_docs.make_request(docs)
+
+    context['sort_form'] = TagsSortForm(
+        initial={
+            'studies': sort_docs.studies,
+            'sort_type': sort_docs.sort_type_get,
+            'subjects': sort_docs.subjects,
+        }
+    )
+    context['search_form'] = SearchForm(
+        initial={
+            'q': sort_docs.search
+        }
+    )
+
     context['user_profile'] = user_profile
     context['docs'] = docs
+    context['has_docs'] = True
+
     return render(request, 'profile.html', context)
 
 
@@ -165,9 +159,31 @@ def profile_edit(request, pk):
 
 
 def bookmarks(request):
-    context = {
-        'docs': request.user.bookmarks.all()
-    }
+    context = {}
+
+    docs = request.user.bookmarks.all()
+
+    if request.GET.get('drop'):
+        return redirect('/bookmarks')
+
+    sort_docs = SortDocs(request)
+    sort_docs.convert()
+    docs = sort_docs.make_request(docs)
+
+    context['sort_form'] = TagsSortForm(
+        initial={
+            'studies': sort_docs.studies,
+            'sort_type': sort_docs.sort_type_get,
+            'subjects': sort_docs.subjects,
+        }
+    )
+    context['search_form'] = SearchForm(
+        initial={
+            'q': sort_docs.search
+        }
+    )
+    context['docs'] = docs
+    context['has_docs'] = True
 
     return render(request, 'bookmarked_docs.html', context)
 
@@ -183,7 +199,7 @@ def doc_page(request, pk):
     if request.method == 'POST':
         if request.POST.get('delete'):
             disk_invoker = DiskInvoker(token=DISK_TOKEN)
-            disk_invoker.run('delete', path=doc.path)
+            disk_invoker.run(COMMANDS.DELETE, path=doc.path)
             doc.delete()
             return redirect('/')
 
@@ -224,7 +240,7 @@ def doc_page_edit(request, pk):
 
             if 'file' in request.FILES:
                 disk_invoker = DiskInvoker(token=DISK_TOKEN)
-                disk_invoker.run('delete', path=doc.path)
+                disk_invoker.run(COMMANDS.DELETE, path=doc.path)
 
                 path = DISK_PATH + unique_name_generator()
 
@@ -232,10 +248,10 @@ def doc_page_edit(request, pk):
                 response_file = BytesIO(
                     [i for i in request.FILES['file'].chunks()][0]
                 )
-                disk_invoker.run('upload', path=path, file=response_file)
-                disk_invoker.run('publish', path=path)
+                disk_invoker.run(COMMANDS.UPLOAD, path=path, file=response_file)
+                disk_invoker.run(COMMANDS.PUBLISH, path=path)
 
-                doc.link = disk_invoker.run('get_info', path=path)['public_url']
+                doc.link = disk_invoker.run(COMMANDS.INFO, path=path)['public_url']
                 doc.path = path
 
             doc.save()
@@ -284,9 +300,9 @@ def create_docs(request):
                 [i for i in request.FILES['file'].chunks()][0]
             )
 
-            disk_invoker.run('upload', path=path, file=response_file)
-            disk_invoker.run('publish', path=path)
-            info = disk_invoker.run('get_info', path=path)
+            disk_invoker.run(COMMANDS.UPLOAD, path=path, file=response_file)
+            disk_invoker.run(COMMANDS.PUBLISH, path=path)
+            info = disk_invoker.run(COMMANDS.INFO, path=path)
 
             doc = Doc(
                 title=form.cleaned_data.get('title'),

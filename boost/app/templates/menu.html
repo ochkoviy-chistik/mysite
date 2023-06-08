@@ -5,6 +5,48 @@
           {% else %}
           <a class="navbar-brand" href="/">BOOST!</a>
           {% endif %}
+          {% if has_docs %}
+            <li type="button" class="nav-item border border-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+              Сортровка
+            </li>
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Сортировка</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <form method="GET">
+                  <div class="modal-body">
+                    <div class="d-flex justify-content-center mb-3">
+                      {{search_form}}
+                    </div>
+                      <div class="d-flex justify-content-between">
+                          <div>
+                              {{sort_form.subjects.label}}:
+                              {{sort_form.subjects}}
+                          </div>
+                          <div>
+                              {{sort_form.sort_type.label}}:
+                              {{sort_form.sort_type}}
+                          </div>
+                          <div>
+                              {{sort_form.studies.label}}:
+                              {{sort_form.studies}}
+                          </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer d-flex justify-content-center">
+                    <div>
+                      <input type="submit" class="btn btn-secondary" name="drop" value="Сбросить">
+                      <input type="submit" class="btn btn-primary" value="Сортировать">
+                    </div>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% endif %}
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>

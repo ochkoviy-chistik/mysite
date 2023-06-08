@@ -6,22 +6,16 @@ import uuid
 class DiskInvoker:
     def __init__(self, token):
         self.disk = yadisk.YaDisk(token=token)
-        self.commands = {
-            'upload': UploadFileCommand,
-            'publish': PublishFileCommand,
-            'get_info': GetInfoCommand,
-            'delete': DeleteFileCommand,
-        }
 
-    def run(self, command, file=None, path=None):
-        return self.commands[command](self).execute(file=file, path=path)
+    def run(self, command, **kwargs):
+        return command(self).execute(**kwargs)
 
 
 class Command(object):
     def __init__(self, disk_invoker: DiskInvoker):
         self.disk = disk_invoker.disk
 
-    def execute(self, file=None, path=None):
+    def execute(self, **kwargs):
         pass
 
 
@@ -29,24 +23,24 @@ class UploadFileCommand(Command):
     def __init__(self, disk_invoker: DiskInvoker):
         super().__init__(disk_invoker)
 
-    def execute(self, file=None, path=None):
-        self.disk.upload(file, path)
+    def execute(self, **kwargs):
+        self.disk.upload(kwargs['file'], kwargs['path'])
 
 
 class PublishFileCommand(Command):
     def __init__(self, disk_invoker: DiskInvoker):
         super().__init__(disk_invoker)
 
-    def execute(self, file=None, path=None):
-        self.disk.publish(path)
+    def execute(self, **kwargs):
+        self.disk.publish(kwargs['path'])
 
 
 class GetInfoCommand(Command):
     def __init__(self, disk_invoker: DiskInvoker):
         super().__init__(disk_invoker)
 
-    def execute(self, file=None, path=None):
-        info = self.disk.get_meta(path)
+    def execute(self, **kwargs):
+        info = self.disk.get_meta(kwargs['path'])
         return info
 
 
@@ -54,8 +48,15 @@ class DeleteFileCommand(Command):
     def __init__(self, disk_invoker: DiskInvoker):
         super().__init__(disk_invoker)
 
-    def execute(self, file=None, path=None):
-        self.disk.remove(path)
+    def execute(self, **kwargs):
+        self.disk.remove(kwargs['path'])
+
+
+class COMMANDS:
+    UPLOAD = UploadFileCommand
+    PUBLISH = PublishFileCommand
+    INFO = GetInfoCommand
+    DELETE = DeleteFileCommand
 
 
 def unique_name_generator():
@@ -68,10 +69,11 @@ def main():
 
     disk_invoker = DiskInvoker(dotenv.get_key(r'../.env', 'DISK_TOKEN'))
 
-    disk_invoker.run('upload', file=r'../media/pic.png', path=path)
-    disk_invoker.run('publish', path=path)
-    link = disk_invoker.run('get_info', path=path)['public_url']
-    disk_invoker.disk.remove(path)
+    disk_invoker.run(COMMANDS.UPLOAD, file=r'../media/pic.png', path=path)
+    disk_invoker.run(COMMANDS.PUBLISH, path=path)
+    link = disk_invoker.run(COMMANDS.INFO, path=path)
+    print(link)
+    disk_invoker.run(COMMANDS.DELETE, path=path)
 
 
 if __name__ == '__main__':
