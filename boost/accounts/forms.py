@@ -89,6 +89,12 @@ class UserChangeForm (forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'avatar', 'first_name', 'last_name']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'username'}),
+            'avatar': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'avatar'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'first_name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'last_name'}),
+        }
 
 
 class LoginForm (forms.Form):

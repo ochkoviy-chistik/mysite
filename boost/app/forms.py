@@ -2,12 +2,12 @@ from django import forms
 from .tags import Subject, Study
 
 
-class DocCreationForm (forms.Form):
+class DocCreationForm(forms.Form):
     title = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': 'Email'
+                'placeholder': 'Title'
             }
         ),
         required=True,
@@ -77,30 +77,56 @@ class DocCreationForm (forms.Form):
         return image
 
 
-class DocEditForm (forms.Form):
+class DocEditForm(forms.Form):
     title = forms.CharField(
-        widget=forms.TextInput,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Title'
+            }
+        ),
         required=True,
         max_length=255,
     )
     preview = forms.ImageField(
+        widget=forms.FileInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
         required=False,
     )
     subjects = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple(
+            attrs={
+                'class': 'form-check-input'
+            }
+        ),
         queryset=Subject.objects.all(),
     )
     studies = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.CheckboxSelectMultiple(
+            attrs={
+                'class': 'form-check-input'
+            }
+        ),
         queryset=Study.objects.all(),
     )
     description = forms.CharField(
-        widget=forms.Textarea,
+        widget=forms.Textarea(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
         max_length=511,
         required=True,
     )
     file = forms.FileField(
-        widget=forms.FileInput,
+        widget=forms.FileInput(
+            attrs={
+                'class': 'form-control',
+            }
+        ),
         required=False
     )
 
@@ -115,14 +141,14 @@ class DocEditForm (forms.Form):
             return file
 
 
-class CommentForm (forms.Form):
+class CommentForm(forms.Form):
     comment = forms.CharField(
         widget=forms.TextInput,
         max_length=511
     )
 
 
-class TagsSortForm (forms.Form):
+class TagsSortForm(forms.Form):
     subjects = forms.ModelMultipleChoiceField(
         queryset=Subject.objects.all(),
         widget=forms.CheckboxSelectMultiple
@@ -143,9 +169,14 @@ class TagsSortForm (forms.Form):
     )
 
 
-class SearchForm (forms.Form):
+class SearchForm(forms.Form):
     q = forms.CharField(
         label='Поиск по названию',
-        widget=forms.TextInput,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'search'
+            }
+        ),
         required=False
     )

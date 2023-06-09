@@ -20,7 +20,10 @@
                   <form method="GET">
                   <div class="modal-body">
                     <div class="d-flex justify-content-center mb-3">
-                      {{search_form}}
+                      <div class="form-floating mb-3">
+                        {{search_form.q}}
+                        <label for="{{sort_docs.search.id_for_label}}">Поиск по названию:</label>
+                    </div>
                     </div>
                       <div class="d-flex justify-content-between">
                           <div>
