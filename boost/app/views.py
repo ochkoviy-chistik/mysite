@@ -319,7 +319,7 @@ def sign_up(request):
             user.is_active = False
             user.save()
             activate_email(request, user, form.cleaned_data.get('email'))
-            return redirect('/')
+            return redirect('/login/')
 
     form = forms.RegisterForm()
 

@@ -10,6 +10,7 @@
 </head>
 <body>
     <header>
+        {% include 'menu.html' %}
     </header>
     <main class="position-absolute top-50 start-50 translate-middle">
         <section class="d-flex justify-content-center">
@@ -25,7 +26,6 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-                
                 <form method="POST" class="d-flex flex-column">
                     {% csrf_token %}
                     <div class="form-floating mb-3">
@@ -39,7 +39,7 @@
                     <div class="d-flex justify-content-end">
                         <a href="/signup" class="link mb-2">Регистрация</a>
                     </div>
-                    <input class="btn btn-primary" type="submit">
+                    <input class="btn btn-success" type="submit">
                 </form>
             </section>
         </section>

@@ -11,12 +11,34 @@ class RegisterForm(forms.ModelForm):
 
     """
 
-    password = forms.CharField(widget=forms.PasswordInput)
-    password_2 = forms.CharField(label='Confirm Password', widget=forms.PasswordInput)
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'password'
+            }
+        )
+    )
+    password_2 = forms.CharField(
+        label='Confirm Password',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'password_2'
+            }
+        )
+    )
 
     class Meta:
         model = User
         fields = ['email', 'username', 'avatar', 'first_name', 'last_name']
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email'}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'username'}),
+            'avatar': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'avatar'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'first_name'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'last_name'}),
+        }
 
     def clean_email(self):
         """
