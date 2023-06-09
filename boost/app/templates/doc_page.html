@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'styles/main.css' %}">
 </head>
 <body onload="load()">
-    <header>
+    <header class="mb-3">
         {% include 'menu.html' %}
     </header>
     <main class="d-flex justify-content-center">
@@ -69,7 +69,7 @@
                             </section>
                         </section>
                     </section>
-                    <section class="border border-1" id="commentsSection">
+                    <section class="border border-1 rounded" id="commentsSection">
                         <h2>Комментарии:</h2>
                         <div class="d-flex justify-content-center">
                             <form method="POST">

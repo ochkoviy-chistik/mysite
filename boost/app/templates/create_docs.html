@@ -1,15 +1,81 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Добавить</title>
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
 </head>
 <body>
-
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit">
-</form>
+<header>   
+    {% include 'menu.html' %}
+</header>
+<main>
+    <section class="position-absolute top-50 start-50 translate-middle">
+        <section class="p-2 border border-5 rounded bg-body">
+            <section class="d-flex justify-content-center mb-4">
+                <h2>Добавление документа.</h2>
+            </section>
+            <section>
+                {% for field, error in form.errors.items %}
+                    {% for e in error %}
+                        <div class="alert alert-danger d-flex justify-content-between" role="alert">
+                            <p>{{e}}</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            </section>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-floating mb-3">
+                    {{form.title}}
+                    <label for="{{form.title.id_for_label}}">Название документа:</label>
+                </div>
+                <div class="mb-3">
+                    <label for="{{form.preview.id_for_label}}" class="form-label">Титульный лист документа:</label>
+                    {{form.preview}}
+                </div>
+                <div class="d-flex justify-content-around mb-3">
+                    <div>
+                        <h4>Предметы:</h4>
+                        {% for field in form.subjects %}
+                            <div class="form-check">
+                                <label class="form-check-label" for="{{form.field.id_for_label}}">
+                                    {{field.label}}
+                                </label>
+                                {{field}}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <h4>Класс:</h4>
+                        {% for field in form.studies %}
+                            <div class="form-check">
+                                <label class="form-check-label" for="{{form.field.id_for_label}}">
+                                    {{field.label}}
+                                </label>
+                                {{field}}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="form-floating mb-3">
+                    {{form.description}}
+                    <label for="{{form.description.id_for_label}}">Описание:</label>
+                  </div>
+                <div class="mb-3">
+                    <label for="{{form.file.id_for_label}}" class="form-label">Документ:</label>
+                    {{form.file}}
+                </div>
+                <div class="d-flex justify-content-center">
+                    <input class="btn btn-primary" type="submit">
+                </div>
+            </form>
+        </section>
+    </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
 </html>

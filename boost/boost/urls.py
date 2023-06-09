@@ -18,6 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.decorators import login_required
 from app import views
 from app.ajax_queryes import ajax_notes
 
@@ -27,18 +28,18 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
 
-    path('login/', LoginView.as_view(), name='login'),
-    path('logout/', views.login, name='logout'),
+    path('login/', views.login, name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('signup/', views.sign_up, name='sign_up'),
     path('activate/<uidb64>/<token>', views.activate, name='activate'),
 
-    path('id<int:pk>/', views.profile, name='profile'),
-    path('id<int:pk>/edit/', views.profile_edit, name='edit'),
-    path('bookmarks/', views.bookmarks, name='bookmarks'),
+    path('id<int:pk>/', login_required(views.profile, login_url='/login/'), name='profile'),
+    path('id<int:pk>/edit/', login_required(views.profile_edit, login_url='/login/'), name='edit'),
+    path('bookmarks/', login_required(views.bookmarks, login_url='/login/'), name='bookmarks'),
 
-    path('document<int:pk>/', views.doc_page, name='doc_page'),
-    path('document<int:pk>/edit/', views.doc_page_edit, name='doc_page'),
-    path('create/', views.create_docs, name='create_docs'),
+    path('document<int:pk>/', login_required(views.doc_page, login_url='/login/'), name='doc_page'),
+    path('document<int:pk>/edit/', login_required(views.doc_page_edit, login_url='/login/'), name='doc_page'),
+    path('create/', login_required(views.create_docs, login_url='/login/'), name='create_docs'),
 
     path('document<int:pk>/getdata', ajax_notes.get_data, name='data_get_ajax'),
     path('documents/postlikedata', ajax_notes.like_post, name='like_post_ajax'),

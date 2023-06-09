@@ -12,6 +12,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
 
 from accounts import forms
 from accounts.models import User
@@ -112,6 +113,12 @@ def login(request):
                 if user.is_active:
                     login_auth(request, user)
                     messages.success(request, 'Успешно!')
+
+                    next_url = request.GET.get('next')
+
+                    if next_url is not None:
+                        return redirect(next_url)
+
                     return redirect('/')
 
                 else:
@@ -354,7 +361,7 @@ def create_docs(request):
             doc.studies.set(form.cleaned_data.get('studies'))
             doc.subjects.set(form.cleaned_data.get('subjects'))
 
-            return redirect('/')
+            return redirect(f'/document{doc.pk}')
 
     else:
         form = DocCreationForm()
