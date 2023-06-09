@@ -12,13 +12,13 @@ class UserManager (BaseUserManager):
         Creates and saves a User with the given email and password.
         """
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError('У пользователя должен быть адрес электронной почты!')
 
         if not username:
-            raise ValueError('Users must have an username')
+            raise ValueError('У пользователя должен быть ник!')
 
         if not last_name or not first_name:
-            raise ValueError('Users must have first name and last name')
+            raise ValueError('Пользователь должен указать имя и фамилию!')
 
         user = self.model(
             email=self.normalize_email(email),

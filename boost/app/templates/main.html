@@ -10,20 +10,22 @@
               <link rel="stylesheet" href="{% static 'styles/main.css' %}">
 </head>
 <body>
-    <header>
+    <header class="mb-3">
       {% include 'menu.html' %}
-      <div class="col-6 d-flex justify-content-center">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-success" role="alert">
-                    {{message}}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
-      </div>
     </header>
 <main>
+    <section>
+        <div class="d-flex justify-content-center">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success" role="alert">
+                        {{message}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+          </div>
+    </section>
   <section class="d-flex justify-content-center flex-wrap">
     {% for doc in docs %}
         <div class="cardDoc card border-5 m-2 p-2" style="max-width: 540px;">

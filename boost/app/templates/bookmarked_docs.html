@@ -14,7 +14,11 @@
         {% include 'menu.html' %}
       </header>
     <main>
+        <section class="d-flex justify-content-center">
+                <h2 style="color: #fff;">Ваши закладки:</h2>
+            </section>
         <section class="d-flex justify-content-center flex-wrap">
+            
             {% for doc in docs %}
             <div class="cardDoc card border-5 m-2 p-2" style="max-width: 540px;">
                 <a href="/document{{doc.pk}}" class="cardLink">

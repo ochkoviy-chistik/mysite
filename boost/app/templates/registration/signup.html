@@ -16,8 +16,16 @@
     <main>
         <section class="position-absolute top-50 start-50 translate-middle">
             <section class="bg-body p-3 border border-5 rounded">
-                <section class="d-flex justify-content-center mb-4">
+                <section class="d-flex flex-column mb-4">
                     <h2>Регистрация.</h2>
+                    {% for field, error in form.errors.items %}
+                        {% for e in error %}
+                            <div class="alert alert-danger d-flex justify-content-between" role="alert">
+                                <p>{{e}}</p>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
                 </section>
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}

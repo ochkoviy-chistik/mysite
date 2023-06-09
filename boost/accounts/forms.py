@@ -48,7 +48,7 @@ class RegisterForm(forms.ModelForm):
         qs = User.objects.filter(email=email)
 
         if qs.exists():
-            raise forms.ValidationError("Email is taken")
+            raise forms.ValidationError("Эта почта уже используется!")
 
         return email
 
@@ -57,7 +57,7 @@ class RegisterForm(forms.ModelForm):
         qs = User.objects.filter(username=username)
 
         if qs.exists():
-            raise forms.ValidationError('Username is taken')
+            raise forms.ValidationError('Этот ник уже занят!')
 
         return username
 
@@ -70,7 +70,7 @@ class RegisterForm(forms.ModelForm):
         password_2 = cleaned_data.get("password_2")
 
         if password is not None and password != password_2:
-            self.add_error("password_2", "Your passwords must match")
+            self.add_error("password_2", "Пароли должны совпадать!")
 
         return cleaned_data
 

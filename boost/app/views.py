@@ -45,7 +45,7 @@ def activate(request, uidb64, token):
     else:
         messages.error(request, 'ERROR')
 
-    return redirect('/login')
+    return redirect('/login/')
 
 
 def activate_email(request, user, to_email):
@@ -63,9 +63,9 @@ def activate_email(request, user, to_email):
     email = EmailMessage(mail_subj, message, to=[to_email])
 
     if email.send():
-        messages.success(request, 'SUCCESS')
+        messages.success(request, f'Для завершения регистрации подтвердите почту {user.email}.')
     else:
-        messages.error(request, 'ERROR')
+        messages.error(request, 'Что-то пошло не так :(')
 
 
 def index(request):
@@ -112,7 +112,7 @@ def login(request):
 
                 if user.is_active:
                     login_auth(request, user)
-                    messages.success(request, 'Успешно!')
+                    messages.success(request, 'Вы успешно вошли в аккаунт!')
 
                     next_url = request.GET.get('next')
 
@@ -321,7 +321,8 @@ def sign_up(request):
             activate_email(request, user, form.cleaned_data.get('email'))
             return redirect('/login/')
 
-    form = forms.RegisterForm()
+    else:
+        form = forms.RegisterForm()
 
     context['form'] = form
     return render(request, 'registration/signup.html', context)

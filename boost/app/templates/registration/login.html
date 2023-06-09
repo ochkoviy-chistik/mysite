@@ -20,10 +20,18 @@
                 </div>
                 {% if messages %}
                     {% for message in messages %}
+                    {% if message.tags == 'error' %}
                         <div class="alert alert-danger d-flex justify-content-between" role="alert">
                             {{message}}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
+                    {% endif %}
+                    {% if message.tags == 'success' %}
+                        <div class="alert alert-success d-flex justify-content-between" role="alert">
+                            {{message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
                     {% endfor %}
                 {% endif %}
                 <form method="POST" class="d-flex flex-column">
