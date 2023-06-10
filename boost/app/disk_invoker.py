@@ -64,10 +64,10 @@ def unique_name_generator():
 
 
 def main():
-    path = f'{dotenv.get_key(r"../.env", "DISK_PATH")}' \
+    path = f'{dotenv.get_key(r"../../.env", "DISK_PATH")}' \
            f'{unique_name_generator()}'
 
-    disk_invoker = DiskInvoker(dotenv.get_key(r'../.env', 'DISK_TOKEN'))
+    disk_invoker = DiskInvoker(dotenv.get_key(r'../../.env', 'DISK_TOKEN'))
 
     disk_invoker.run(COMMANDS.UPLOAD, file=r'../media/pic.png', path=path)
     disk_invoker.run(COMMANDS.PUBLISH, path=path)
