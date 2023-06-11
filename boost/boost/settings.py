@@ -14,7 +14,7 @@ import dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-env = dotenv.dotenv_values('.env')
+env = dotenv.dotenv_values(r'.env')
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
