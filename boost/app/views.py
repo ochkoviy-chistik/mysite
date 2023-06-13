@@ -46,6 +46,10 @@ def index(request):
             'q': sort_docs.search
         }
     )
+
+    for i in range(len(docs)):
+        docs[i].title = docs[i].title.capitalize()
+
     context['docs'] = docs
     context['has_docs'] = True
 
@@ -78,6 +82,9 @@ def profile(request, pk):
             'q': sort_docs.search
         }
     )
+
+    for i in range(len(docs)):
+        docs[i].title = docs[i].title.capitalize()
 
     context['user_profile'] = user_profile
     context['docs'] = docs
@@ -140,6 +147,10 @@ def bookmarks(request):
             'q': sort_docs.search
         }
     )
+
+    for i in range(len(docs)):
+        docs[i].title = docs[i].title.capitalize()
+
     context['docs'] = docs
     context['has_docs'] = True
 
@@ -148,6 +159,8 @@ def bookmarks(request):
 
 def doc_page(request, pk):
     doc = Doc.objects.get(pk=pk)
+    doc.title = doc.title.capitalize()
+
     context = {
         'doc': doc
     }
@@ -178,7 +191,7 @@ def doc_page_edit(request, pk):
 
     form = DocEditForm(
         initial={
-            'title': doc.title,
+            'title': str(doc.title).capitalize(),
             'description': doc.description,
             'subjects': doc.subjects.all(),
             'studies': doc.studies.all(),
@@ -188,7 +201,7 @@ def doc_page_edit(request, pk):
         form = DocEditForm(request.POST, request.FILES)
 
         if form.is_valid():
-            doc.title = form.cleaned_data.get('title')
+            doc.title = str(form.cleaned_data.get('title')).lower()
             doc.description = form.cleaned_data.get('description')
 
             if 'preview' in request.FILES:
@@ -244,7 +257,7 @@ def create_docs(request):
             info = disk_invoker.run(COMMANDS.INFO, path=path)
 
             doc = Doc(
-                title=form.cleaned_data.get('title'),
+                title=str(form.cleaned_data.get('title')).lower(),
                 link=info['public_url'],
                 path=path,
                 description=form.cleaned_data.get('description'),

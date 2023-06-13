@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
-from app import views
-from app.ajax_queryes import ajax_notes
+from . import views
+from .ajax_queryes import ajax_notes
 from django.urls import path
 
 

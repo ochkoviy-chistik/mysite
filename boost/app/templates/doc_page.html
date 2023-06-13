@@ -83,7 +83,7 @@
                             <form method="POST">
                                 {% csrf_token %}
                                 <input type="text" id="messageInput" name="messageInput">
-                                <input class="btn btn-primary" type="button" value="Отправить" onclick="postComment();setTimeout(loadData, 50)">
+                                <input class="btn btn-primary" type="button" id="messageButton" value="Отправить" onclick="postComment();setTimeout(loadData, 50)" disabled>
                             </form>
                         </div>
                         <hr>
@@ -95,6 +95,21 @@
     </main>
     <script>
         let DATA = 0;
+        let input = document.getElementById('messageInput');
+
+        input.addEventListener('keyup', function(event) {
+            if (input.value) {
+                document.querySelector('#messageButton').disabled = false;
+            }
+            else {
+                document.querySelector('#messageButton').disabled = true;
+            }
+
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById('messageButton').click();
+            }
+            });
 
         function loadData() {
             let xhr = new XMLHttpRequest();
