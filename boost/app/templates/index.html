@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BOOST</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+              rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+              crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'cloud-fill.svg' %}">
+</head>
+<body>
+    <header class="mb-3">
+      {% include 'menu.html' %}
+    </header>
+    <main>
+      <section>
+        <section class="svgBlock d-flex justify-content-center mb-3">
+          <section class="p-2 border-5 rounded">
+            <img class="svgPic" src="{% static 'examcloud.svg' %}" alt="">
+          </section>
+        </section>
+        <section class="d-flex justify-content-center mb-3">
+          <section class="textBlock p-2 border-5 rounded">
+            <p align="justify">Добро пожаловать на ресурс, где вы можете разместить и получить доступ к документам для подготовки к экзаменам.
+             Эта платформа создана для тех, кто стремится к успеху в учебе.</p>
+          </section>
+        </section>
+        <section class="d-flex justify-content-center mb-3">
+          <section class="textBlock p-2 border-5 rounded">
+            <p align="justify">Наш ресурс будет полезен для тех, кто готовятся к экзаменам.
+              Этот сервис предлагает широкий выбор документов, которые помогут подготовиться к экзамену.</p>
+          </section>
+        </section>
+        <section class="d-flex justify-content-center mb-3">
+          <section class="textBlock p-2 border-5 rounded">
+            <p align="justify">Этот ресурс будет полезен тем, кто хочет улучшить свои знания и навыки в определенной области.
+              Мы предлагаем документы для самообразования и саморазвития.</p>
+          </section>
+        </section>
+        <section class="d-flex justify-content-center mb-3">
+          <section class="textBlock p-2 border-5 rounded">
+            <p align="justify">Независимо от того, кто вы и к каким экзаменам готовитесь, ресурс поможет вам.
+              Размещайте свои документы на этой платформе и получайте доступ к документам других пользователей. </p>
+          </section>
+        </section>
+      </section>
+    </main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>

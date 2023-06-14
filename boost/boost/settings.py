@@ -14,8 +14,10 @@ import dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 project_folder = os.path.expanduser('~/boostJoy')
 env = dotenv.dotenv_values(os.path.join(project_folder, '.env'))
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -127,7 +129,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(BASE_DIR, '')
 MEDIA_URL = '/media/'
 
 LOGOUT_REDIRECT_URL = '/login/'

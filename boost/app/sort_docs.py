@@ -1,5 +1,5 @@
 from django.db.models import Q
-from app.models import Doc
+from .models import Doc
 
 
 class SortDocs:
@@ -31,7 +31,7 @@ class SortDocs:
 
         if self.search:
             self.query_title = Q(
-                title__contains=self.search.lower()
+                title__contains=str(self.search).lower()
             )
             self.query_description = Q(
                 description__contains=self.search.lower()

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'styles/doc_page.css' %}">
     <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'cloud-fill.svg' %}">
 </head>
 <body onload="load()">
     <header class="mb-3">
@@ -46,12 +47,13 @@
                                         <button class="btn" id="commentBtn"></button>
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <div class="ya-share2" 
-                                            data-curtain 
-                                            data-shape="round" 
+                                        <div class="ya-share2"
+                                            data-curtain
+                                            data-shape="round"
                                             data-size="m"
                                             data-services="vkontakte,telegram,twitter,whatsapp"
                                             data-title="{{doc.title}}"
+                                            data-url="{{request.META.HTTP_HOST}}/document{{doc.pk}}"
                                             data-description="{{doc.description}}">
                                         </div>
                                     </div>
@@ -83,23 +85,38 @@
                             <form method="POST">
                                 {% csrf_token %}
                                 <input type="text" id="messageInput" name="messageInput">
-                                <input class="btn btn-primary" type="button" value="Отправить" onclick="postComment();setTimeout(loadData, 50)">
+                                <input class="btn btn-primary" type="button" id="messageButton" value="Отправить" onclick="postComment();setTimeout(loadData, 50)" disabled>
                             </form>
                         </div>
                         <hr>
                         <div id="commentBlock">
-                            
+
                         </div>
                     </section>
         </section>
     </main>
     <script>
         let DATA = 0;
+        let input = document.getElementById('messageInput');
+
+        input.addEventListener('keyup', function(event) {
+            if (input.value) {
+                document.querySelector('#messageButton').disabled = false;
+            }
+            else {
+                document.querySelector('#messageButton').disabled = true;
+            }
+
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById('messageButton').click();
+            }
+            });
 
         function loadData() {
             let xhr = new XMLHttpRequest();
             xhr.open(method="GET", url="/document{{doc.pk}}/getdata", async=true);
-            
+
             xhr.onload = function() {
                 let data = JSON.parse(xhr.response);
 
@@ -148,9 +165,9 @@
                     emptyTitle.className = 'text-center';
                     emptyTitle.innerHTML = 'Пока здесь пусто!';
 
-                    document.querySelector('#commentBlock').appendChild(emptyTitle); 
+                    document.querySelector('#commentBlock').appendChild(emptyTitle);
                 }
-                
+
                 if (DATA != data['comments']['count']) {
                     commentBlock.innerHTML = '';
                     let comments = data['comments']['data'];
@@ -174,11 +191,11 @@
 
                         if ('{{request.user}}' == comments[i]['author']) {
                             comment.className += ' bg-info-subtle';
-                            
-                            deleteButton.innerHTML = `<button 
-                                                type="button" 
-                                                class="btn-close" 
-                                                aria-label="Close" 
+
+                            deleteButton.innerHTML = `<button
+                                                type="button"
+                                                class="btn-close"
+                                                aria-label="Close"
                                                 onclick="deleteComment(${comments[i]['pk']});setTimeout(loadData, 50)">
                                                 </button>`;
                         }
@@ -186,7 +203,7 @@
                         textMessage.innerHTML = comments[i]['text'];
                         author.innerHTML = comments[i]['author'];
                         date.innerHTML = comments[i]['date'];
-                        
+
 
                         document.querySelector(`#commentBlock`).appendChild(comment);
                         document.querySelector(`#${comment.id}`).appendChild(commentBody);
@@ -197,7 +214,7 @@
                         document.querySelector(`#${commentBottom.id}`).appendChild(author);
                     }
                 }
-                
+
                 DATA = data['comments']['count'];
 
             }
