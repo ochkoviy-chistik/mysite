@@ -18,23 +18,22 @@
                 <h2 style="color: #fff;">Ваши закладки:</h2>
             </section>
         <section class="d-flex justify-content-center flex-wrap">
-            
             {% for doc in docs %}
             <div class="cardDoc card border-5 m-2 p-2" style="max-width: 540px;">
                 <a href="/document{{doc.pk}}" class="cardLink">
                 <div class="row g-0">
                 <div class="col-md-4 p-2 align-bottom">
-                    <img src="{{doc.preview.url}}" class="img-fluid rounded-start" alt="">
+                    <img src="{{doc.preview.url}}" class="img-fluid rounded-start mb-2" alt="">
+                    <div class="d-flex justify-content-between">
+                        <p class="m-1">{% include 'note_icons/caret_up_fill.html' %} {{doc.likes}}</p>
+                        <p class="m-1">{% include 'note_icons/caret_down_fill.html' %} {{doc.dislikes}}</p>
+                        <p class="m-1">{% include 'note_icons/comment.html' %} {{doc.comments}}</p>
+                    </div>
                 </div>
                     <div class="col-md-8">
                         <div class="card-body">
                             <div class="d-flex justify-content-between">
                                 <h5 class="card-title">{{doc.title}}</h5>
-                                <div class="d-flex flex-wrap">
-                                    <p class="m-1">{% include 'note_icons/caret_up_fill.html' %} {{doc.likes}}</p>
-                                    <p class="m-1">{% include 'note_icons/caret_down_fill.html' %} {{doc.dislikes}}</p>
-                                    <p class="m-1">{% include 'note_icons/comment.html' %} {{doc.comments}}</p>
-                                </div>
                             </div>
                                 <p class="card-text">{{doc.description}}</p>
                                 <p class="card-text"><small class="text-body-secondary">{{doc.author}}</small></p>
@@ -45,6 +44,7 @@
                                     data-shape="round" 
                                     data-services="vkontakte,telegram,twitter,whatsapp"
                                     data-title="{{doc.title}}"
+                                    data-url="{{request.META.HTTP_HOST}}/document{{doc.pk}}"
                                     data-description="{{doc.description}}"></div>
                                 </div>
                             </div>

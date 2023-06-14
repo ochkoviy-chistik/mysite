@@ -3,7 +3,16 @@ body {
 }
 
 .cardDoc {
+    border-style: solid;
     border-color: #BF5700;
+}
+
+.textBlock {
+    border-style: solid;
+    border-color: #BF5700;
+    width: 70%;
+    background-color: #fff;
+    font-size: 1.7rem;
 }
 
 .cardLink {
