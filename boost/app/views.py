@@ -1,18 +1,15 @@
 import datetime
 from io import BytesIO
-import dotenv
 
 from django.contrib import messages
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
-from django.db.models import Q
 from django.contrib.auth import authenticate, login as login_auth
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.http import HttpResponseForbidden
-from django.contrib.auth.decorators import login_required
 
 from accounts import forms
 from accounts.models import User
@@ -26,8 +23,8 @@ from app.sort_docs import SortDocs
 
 # Create your views here.
 
-DISK_TOKEN = dotenv.get_key(r'.env', 'DISK_TOKEN')
-DISK_PATH = dotenv.get_key(r'.env', 'DISK_PATH')
+DISK_TOKEN = 'y0_AgAAAAAs42RnAADLWwAAAADkSmq8xdq1CK6VQqCG_Jye3CX-lBg-4iQ'
+DISK_PATH = '/BOOST/'
 
 
 def activate(request, uidb64, token):
@@ -261,7 +258,7 @@ def doc_page_edit(request, pk):
 
     form = DocEditForm(
         initial={
-            'title': doc.title,
+            'title': doc.title.lower(),
             'description': doc.description,
             'subjects': doc.subjects.all(),
             'studies': doc.studies.all(),
@@ -347,7 +344,7 @@ def create_docs(request):
             info = disk_invoker.run(COMMANDS.INFO, path=path)
 
             doc = Doc(
-                title=form.cleaned_data.get('title'),
+                title=form.cleaned_data.get('title').lower(),
                 link=info['public_url'],
                 path=path,
                 description=form.cleaned_data.get('description'),

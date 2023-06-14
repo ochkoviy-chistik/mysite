@@ -14,7 +14,8 @@ import dotenv
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-env = dotenv.dotenv_values('.env')
+project_folder = os.path.expanduser('~/boostJoy')
+env = dotenv.dotenv_values(os.path.join(project_folder, '.env'))
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -26,7 +27,7 @@ SECRET_KEY = env.get('DJANGO_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.get('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['boost.pythonanywhere.com']
 
 
 # Application definition

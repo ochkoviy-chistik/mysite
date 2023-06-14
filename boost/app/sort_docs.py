@@ -31,10 +31,10 @@ class SortDocs:
 
         if self.search:
             self.query_title = Q(
-                title__contains=self.search
+                title__contains=self.search.lower()
             )
             self.query_description = Q(
-                description__contains=self.search
+                description__contains=self.search.lower()
             )
 
     def make_request(self, docs=Doc.objects.all()):

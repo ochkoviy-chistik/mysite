@@ -1,6 +1,5 @@
-import yadisk
-import dotenv
 import uuid
+import yadisk
 
 
 class DiskInvoker:
@@ -61,20 +60,3 @@ class COMMANDS:
 
 def unique_name_generator():
     return str(uuid.uuid4())
-
-
-def main():
-    path = f'{dotenv.get_key(r"../.env", "DISK_PATH")}' \
-           f'{unique_name_generator()}'
-
-    disk_invoker = DiskInvoker(dotenv.get_key(r'../.env', 'DISK_TOKEN'))
-
-    disk_invoker.run(COMMANDS.UPLOAD, file=r'../media/pic.png', path=path)
-    disk_invoker.run(COMMANDS.PUBLISH, path=path)
-    link = disk_invoker.run(COMMANDS.INFO, path=path)
-    print(link)
-    disk_invoker.run(COMMANDS.DELETE, path=path)
-
-
-if __name__ == '__main__':
-    main()
