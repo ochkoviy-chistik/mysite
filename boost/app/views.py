@@ -27,8 +27,14 @@ DISK_PATH = dotenv.get_key(r'.env', 'DISK_PATH')
 def index(request):
     context = {}
 
+    return render(request, 'index.html', context)
+
+
+def docs_page(request):
+    context = {}
+
     if request.GET.get('drop'):
-        return redirect('/')
+        return redirect('/docs')
 
     sort_docs = SortDocs(request)
     sort_docs.convert()
@@ -53,7 +59,7 @@ def index(request):
     context['docs'] = docs
     context['has_docs'] = True
 
-    return render(request, 'main.html', context)
+    return render(request, 'docs.html', context)
 
 
 def profile(request, pk):
@@ -107,7 +113,7 @@ def profile_edit(request, pk):
 
             messages.success(request, 'Изменения успешно сохранены!')
 
-            return redirect('/')
+            return redirect(f'id{request.user.pk}')
 
     else:
         form = forms.UserChangeForm(
@@ -172,7 +178,7 @@ def doc_page(request, pk):
             disk_invoker = DiskInvoker(token=DISK_TOKEN)
             disk_invoker.run(COMMANDS.DELETE, path=doc.path)
             doc.delete()
-            return redirect('/')
+            return redirect('/docs')
 
         if form.is_valid():
             pass
@@ -230,7 +236,7 @@ def doc_page_edit(request, pk):
             doc.studies.set(form.cleaned_data.get('studies'))
             doc.subjects.set(form.cleaned_data.get('subjects'))
 
-            return redirect('/')
+            return redirect(f'/document{doc.pk}')
 
     context['form'] = form
     context['doc'] = doc

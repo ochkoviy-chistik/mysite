@@ -5,8 +5,9 @@ from django.urls import path
 
 
 urlpatterns = [
-    path('', views.index),
+    path('', views.index, name='main'),
 
+    path('docs/', views.docs_page, name='docs'),
     path('id<int:pk>/', login_required(views.profile, login_url='/login/'), name='profile'),
     path('id<int:pk>/edit/', login_required(views.profile_edit, login_url='/login/'), name='edit'),
     path('bookmarks/', login_required(views.bookmarks, login_url='/login/'), name='bookmarks'),

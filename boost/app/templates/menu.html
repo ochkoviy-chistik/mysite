@@ -1,10 +1,17 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-          <div>
-            {% if request.path == '/' %}
+          <div class="d-flex">
+          {% if request.path == '/' %}
           <a class="navbar-brand" href="#">BOOST!</a>
           {% else %}
           <a class="navbar-brand" href="/">BOOST!</a>
+          {% endif %}
+          {% if request.path != '/docs/' %}
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/docs/">Документы</a>
+            </li>
+          </ul>
           {% endif %}
           {% if has_docs %}
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
