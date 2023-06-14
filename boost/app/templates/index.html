@@ -8,6 +8,7 @@
               rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
               crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'styles/main.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'logo.png' %}">
 </head>
 <body>
     <header class="mb-3">
@@ -15,6 +16,11 @@
     </header>
     <main>
       <section>
+        <section class="svgBlock d-flex justify-content-center mb-3">
+          <section class="p-2 border-5 rounded">
+            <img class="svgPic" src="{% static 'examcloud.svg' %}" alt="">
+          </section>
+        </section>
         <section class="d-flex justify-content-center mb-3">
           <section class="textBlock p-2 border-5 rounded">
             <p align="justify">Добро пожаловать на ресурс, где вы можете разместить и получить доступ к документам для подготовки к экзаменам.
