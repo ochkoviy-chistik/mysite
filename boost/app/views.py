@@ -1,5 +1,7 @@
 import datetime
+import os
 from io import BytesIO
+import dotenv
 
 from django.contrib import messages
 
@@ -19,9 +21,10 @@ User = get_user_model()
 
 
 # Create your views here.
+dotenv.load_dotenv(dotenv.find_dotenv())
 
-DISK_TOKEN = 'y0_AgAAAAAs42RnAADLWwAAAADkSmq8xdq1CK6VQqCG_Jye3CX-lBg-4iQ'
-DISK_PATH = '/BOOST/'
+DISK_TOKEN = os.environ.get('DISK_TOKEN')
+DISK_PATH = os.environ.get('DISK_PATH')
 
 
 def index(request):
@@ -109,6 +112,12 @@ def profile_edit(request, pk):
         form = forms.UserChangeForm(request.POST, request.FILES, instance=request.user)
 
         if form.is_valid():
+            if 'avatar' in request.FILES:
+                request.user.avatar = request.FILES['avatar']
+
+            else:
+                request.user.avatar = 'media/default_images/default_avatar.png'
+
             form.save()
 
             messages.success(request, 'Изменения успешно сохранены!')

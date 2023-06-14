@@ -5,9 +5,11 @@ from app.models import Doc
 
 # Create your models here.
 
+DEFAULT_AVATAR = 'media/default_images/default_avatar.png'
+
 
 class UserManager (BaseUserManager):
-    def create_user(self, email, username, last_name, first_name, avatar=None, password=None):
+    def create_user(self, email, username, last_name, first_name, avatar=DEFAULT_AVATAR, password=None):
         """
         Creates and saves a User with the given email and password.
         """
@@ -32,7 +34,7 @@ class UserManager (BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_staffuser(self, email, username, last_name, first_name, password, avatar=None):
+    def create_staffuser(self, email, username, last_name, first_name, password, avatar=DEFAULT_AVATAR):
         """
         Creates and saves a staff user with the given email and password.
         """
@@ -48,7 +50,7 @@ class UserManager (BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, last_name, first_name, password, avatar=None):
+    def create_superuser(self, email, username, last_name, first_name, password, avatar=DEFAULT_AVATAR):
         """
         Creates and saves a superuser with the given email and password.
         """
@@ -81,7 +83,7 @@ class User (AbstractBaseUser):
     )
     avatar = models.ImageField(
         verbose_name='Avatar',
-        default='media/default_images/default_avatar.png',
+        default=DEFAULT_AVATAR,
         upload_to='media/',
         blank=False,
     )
