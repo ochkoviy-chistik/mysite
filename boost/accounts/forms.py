@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import ReadOnlyPasswordHashField, PasswordResetForm
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.hashers import make_password
 
 User = get_user_model()
 
@@ -48,6 +50,7 @@ class RegisterForm(forms.ModelForm):
         qs = User.objects.filter(email=email)
 
         if qs.exists():
+            self.fields['email'].widget.attrs['class'] = 'form-control is-invalid'
             raise forms.ValidationError("Эта почта уже используется!")
 
         return email
@@ -57,6 +60,7 @@ class RegisterForm(forms.ModelForm):
         qs = User.objects.filter(username=username)
 
         if qs.exists():
+            self.fields['username'].widget.attrs['class'] = 'form-control is-invalid'
             raise forms.ValidationError('Этот ник уже занят!')
 
         return username
@@ -70,6 +74,7 @@ class RegisterForm(forms.ModelForm):
         password_2 = cleaned_data.get("password_2")
 
         if password is not None and password != password_2:
+            self.fields['password_2'].widget.attrs['class'] = 'form-control is-invalid'
             self.add_error("password_2", "Пароли должны совпадать!")
 
         return cleaned_data
@@ -110,8 +115,27 @@ class LoginForm (forms.Form):
             'class': 'form-control',
             'placeholder': 'Пароль',
         }),
-
     )
+
+    def clean_password(self):
+        email = self.cleaned_data.get('email')
+        password = self.cleaned_data.get('password')
+
+        try:
+            qs = User.objects.get(email=email)
+
+        except ObjectDoesNotExist:
+            qs = None
+
+        if qs:
+            hashed_password = make_password(password)
+
+            if hashed_password != qs.password:
+                self.fields['password'].widget.attrs['class'] = 'form-control is-invalid'
+
+        self.fields['password'].widget.attrs['class'] = 'form-control is-invalid'
+
+        return password
 
 
 class UserAdminCreationForm(forms.ModelForm):
@@ -166,3 +190,18 @@ class UserAdminChangeForm(forms.ModelForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+
+class SetFloatPasswordForm (PasswordResetForm):
+    email = forms.EmailField(
+        label='Адресс электронной почты:',
+        max_length=254,
+        widget=forms.EmailInput(
+            attrs={
+                "autocomplete": "email",
+                "class": "form-control",
+                "id": "floatingInput",
+                "placeholder": "email",
+            }
+        ),
+    )

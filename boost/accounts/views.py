@@ -4,6 +4,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.contrib.auth import authenticate, login as login_auth
 from django.template.loader import render_to_string
+from django.contrib.auth.views import PasswordResetView
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib import messages
@@ -86,6 +87,8 @@ def login(request):
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
 
+            print(email, password)
+
             user = authenticate(email=email, password=password)
 
             if user is not None:
@@ -113,3 +116,7 @@ def login(request):
     context['form'] = form
 
     return render(request, 'registration/login.html', context)
+
+
+class StyledPasswordResetView (PasswordResetView):
+    form_class = forms.SetFloatPasswordForm

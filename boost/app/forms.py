@@ -58,7 +58,15 @@ class DocCreationForm(forms.Form):
         ),
     )
 
+    def clean_subjects(self):
+        subjects = self.cleaned_data.get['subjects']
+        if not subjects:
+            raise forms.ValidationError('Необходимо выбрать предметы!')
+
+        return subjects
+
     def clean_file(self):
+        print(self.data)
         validators = ['pdf', 'docx', 'doc', 'ppt', 'pptx']
         file = self.cleaned_data.get('file')
 

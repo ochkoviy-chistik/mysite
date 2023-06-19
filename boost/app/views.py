@@ -4,9 +4,8 @@ from io import BytesIO
 import dotenv
 
 from django.contrib import messages
-
 from django.shortcuts import render, redirect
-
+from django.contrib.auth import get_user_model
 from django.http import HttpResponseForbidden
 
 from .disk_invoker import unique_name_generator, DiskInvoker, COMMANDS
@@ -15,7 +14,6 @@ from accounts import forms
 from .models import Doc
 from .sort_docs import SortDocs
 
-from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
@@ -260,7 +258,7 @@ def create_docs(request):
         form = DocCreationForm(request.POST, request.FILES)
 
         if form.is_valid():
-            path = DISK_PATH+unique_name_generator()
+            path = DISK_PATH + unique_name_generator()
 
             disk_invoker = DiskInvoker(token=DISK_TOKEN)
             response_file = BytesIO(
@@ -294,3 +292,6 @@ def create_docs(request):
 
     context['form'] = form
     return render(request, 'create_docs.html', context)
+
+
+
