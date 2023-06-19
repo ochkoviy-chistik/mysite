@@ -20,6 +20,16 @@
                 <section class="d-flex justify-content-center mb-4">
                     <h2>Изменение.</h2>
                 </section>
+                <section>
+                        {% for field, error in form.errors.items %}
+                            {% for e in error %}
+                                <div class="alert alert-danger d-flex justify-content-between" role="alert">
+                                    <p>{{e}}</p>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                </section>
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-floating mb-3">

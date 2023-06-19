@@ -22,7 +22,6 @@ class DocCreationForm(forms.Form):
         required=False,
     )
     subjects = forms.ModelMultipleChoiceField(
-        required=True,
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 'class': 'form-check-input'
@@ -31,7 +30,6 @@ class DocCreationForm(forms.Form):
         queryset=Subject.objects.all(),
     )
     studies = forms.ModelMultipleChoiceField(
-        required=True,
         widget=forms.CheckboxSelectMultiple(
             attrs={
                 'class': 'form-check-input'
@@ -58,19 +56,12 @@ class DocCreationForm(forms.Form):
         ),
     )
 
-    def clean_subjects(self):
-        subjects = self.cleaned_data.get['subjects']
-        if not subjects:
-            raise forms.ValidationError('Необходимо выбрать предметы!')
-
-        return subjects
-
     def clean_file(self):
-        print(self.data)
         validators = ['pdf', 'docx', 'doc', 'ppt', 'pptx']
         file = self.cleaned_data.get('file')
 
         if str(file.name).lower().split('.')[-1] not in validators:
+            self.fields['file'].widget.attrs['class'] = 'form-control is-invalid'
             raise forms.ValidationError('Недопустимый тип файла!')
 
         return file
@@ -83,6 +74,20 @@ class DocCreationForm(forms.Form):
             raise forms.ValidationError('Недопустимый формат картинки!')
 
         return image
+
+    def clean(self):
+        subjects = self.cleaned_data.get('subjects')
+        studies = self.cleaned_data.get('studies')
+
+        if studies is None:
+            self.errors['studies'] = ['Необходимо указать класс!']
+            self.fields['studies'].widget.attrs['class'] = 'form-check-input is-invalid'
+
+        if subjects is None:
+            self.errors['subjects'] = ['Необходимо указать предмет!']
+            self.fields['subjects'].widget.attrs['class'] = 'form-check-input is-invalid'
+
+        super().clean()
 
 
 class DocEditForm(forms.Form):
@@ -139,14 +144,37 @@ class DocEditForm(forms.Form):
     )
 
     def clean_file(self):
-        if self.cleaned_data.get('file'):
-            validators = ['pdf', 'docx', 'doc', 'ppt', 'pptx']
-            file = self.cleaned_data.get('file')
+        validators = ['pdf', 'docx', 'doc', 'ppt', 'pptx']
+        file = self.cleaned_data.get('file')
 
-            if str(file.name).split('.')[-1] not in validators:
-                raise forms.ValidationError('недопустимый тип файла')
+        if file is not None and str(file.name).lower().split('.')[-1] not in validators:
+            self.fields['file'].widget.attrs['class'] = 'form-control is-invalid'
+            raise forms.ValidationError('Недопустимый тип файла!')
 
-            return file
+        return file
+
+    def clean_preview(self):
+        validators = ['png', 'jpg', 'jpeg', 'webp', 'heic']
+        image = self.cleaned_data.get('preview')
+
+        if image is not None and str(image.name).lower().split('.')[-1] not in validators:
+            raise forms.ValidationError('Недопустимый формат картинки!')
+
+        return image
+
+    def clean(self):
+        subjects = self.cleaned_data.get('subjects')
+        studies = self.cleaned_data.get('studies')
+
+        if studies is None:
+            self.errors['studies'] = ['Необходимо указать класс!']
+            self.fields['studies'].widget.attrs['class'] = 'form-check-input is-invalid'
+
+        if subjects is None:
+            self.errors['subjects'] = ['Необходимо указать предмет!']
+            self.fields['subjects'].widget.attrs['class'] = 'form-check-input is-invalid'
+
+        super().clean()
 
 
 class CommentForm(forms.Form):

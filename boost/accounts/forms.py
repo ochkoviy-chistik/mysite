@@ -101,6 +101,16 @@ class UserChangeForm (forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'last_name'}),
         }
 
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+
+        qs = User.objects.filter(username=username)
+
+        if qs.exists():
+            raise forms.ValidationError('Пользователь с этим ником уже существует!')
+
+        return username
+
 
 class LoginForm (forms.Form):
     email = forms.EmailField(
