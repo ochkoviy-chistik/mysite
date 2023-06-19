@@ -14,6 +14,26 @@
         {% include 'menu.html' %}
     </header>
     <main class="d-flex justify-content-center">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Предупреждение!</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Вы уверены, что хотите удалить этот файл? После удаления его невозможно будет восстановить?
+                    </div>
+                    <div class="modal-footer d-flex justify-content-between">
+                      <input type="button" class="btn btn-secondary" data-bs-dismiss="modal" value="Нет">
+                      <input type="submit" name="delete" class="btn btn-danger" value="Да">
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </form>
         <section class="col-4">
                     <section class="d-flex justify-content-center">
                         <section id="docCard" class="rounded p-3 mb-4">
@@ -65,14 +85,16 @@
                                 <section class="d-flex justify-content-center">
                                     <form method="POST">
                                         {% csrf_token %}
-                                        <a href="{{doc.link}}" class="btn btn-primary mb-2">
+                                        <a href="{{doc.link}}" class="btn btn-primary">
                                             Перейти на диск
                                         </a>
                                         {% if user == doc.author %}
-                                            <a href="edit/" class="btn btn-secondary mb-2">
+                                            <a href="edit/" class="btn btn-secondary">
                                                 Заменить
                                             </a>
-                                            <input type="submit" name="delete" class="btn btn-danger mb-2" value="Удалить">
+                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                Удалить
+                                              </button>
                                         {% endif %}
                                     </form>
                                 </section>
