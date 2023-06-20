@@ -72,12 +72,12 @@ class User (AbstractBaseUser):
     objects = UserManager()
 
     email = models.EmailField(
-        verbose_name='email address',
+        verbose_name='адресс электронной почты',
         max_length=255,
         unique=True
     )
     username = models.CharField(
-        verbose_name='username',
+        verbose_name='ник',
         max_length=30,
         unique=True
     )
@@ -88,11 +88,11 @@ class User (AbstractBaseUser):
         blank=False,
     )
     first_name = models.CharField(
-        verbose_name='first name',
+        verbose_name='ваше имя',
         max_length=30
     )
     last_name = models.CharField(
-        verbose_name='last name',
+        verbose_name='вашу фамилию',
         max_length=30
     )
     bookmarks = models.ManyToManyField(

@@ -71,6 +71,7 @@ class DocCreationForm(forms.Form):
         image = self.cleaned_data.get('preview')
 
         if image is not None and str(image.name).lower().split('.')[-1] not in validators:
+            self.fields['image'].widget.attrs['class'] = 'form-control is-invalid'
             raise forms.ValidationError('Недопустимый формат картинки!')
 
         return image

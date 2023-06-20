@@ -1,8 +1,11 @@
 from django import forms
-from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import ReadOnlyPasswordHashField, PasswordResetForm
-from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import get_user_model, password_validation
+from django.contrib.auth.forms import ReadOnlyPasswordHashField, PasswordResetForm, SetPasswordForm
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.contrib.auth.hashers import make_password
+from django.utils.translation import gettext_lazy as _
+
+from . import password_validators
 
 User = get_user_model()
 
@@ -107,6 +110,7 @@ class UserChangeForm (forms.ModelForm):
         qs = User.objects.filter(username=username)
 
         if qs.exists():
+            self.fields['username'].widget.attrs['class'] = 'form-control is-invalid'
             raise forms.ValidationError('Пользователь с этим ником уже существует!')
 
         return username
@@ -202,7 +206,7 @@ class UserAdminChangeForm(forms.ModelForm):
         return self.initial["password"]
 
 
-class SetFloatPasswordForm (PasswordResetForm):
+class FloatPasswordResetForm(PasswordResetForm):
     email = forms.EmailField(
         label='Адресс электронной почты:',
         max_length=254,
@@ -215,3 +219,56 @@ class SetFloatPasswordForm (PasswordResetForm):
             }
         ),
     )
+
+
+class SetFloatPasswordForm (SetPasswordForm):
+    error_messages = {
+        "password_mismatch": _("Пароли должны совпадать!"),
+    }
+    new_password1 = forms.CharField(
+        label=_("Новый пароль"),
+        widget=forms.PasswordInput(
+            attrs={
+                "autocomplete": "new-password",
+                'class': 'form-control',
+                'id': 'floatingPassword',
+                'placeholder': 'password'
+            }
+        ),
+        strip=False,
+    )
+    new_password2 = forms.CharField(
+        label=_("Подтвердите новый пароль"),
+        strip=False,
+        widget=forms.PasswordInput(
+            attrs={
+                "autocomplete": "new-password",
+                'class': 'form-control',
+                'id': 'floatingConfirmPassword',
+                'placeholder': 'confirm password'
+            }
+        ),
+    )
+
+    def clean_new_password2(self):
+        password1 = self.cleaned_data.get("new_password1")
+        password2 = self.cleaned_data.get("new_password2")
+
+        if password1 and password2 and password1 != password2:
+            self.fields['new_password1'].widget.attrs['class'] = 'form-control is-invalid'
+            self.fields['new_password2'].widget.attrs['class'] = 'form-control is-invalid'
+
+            raise ValidationError(
+                self.error_messages["password_mismatch"],
+                code="password_mismatch",
+            )
+
+        errors = password_validators.password_valid(password2, self.user)
+
+        if errors:
+            self.fields['new_password1'].widget.attrs['class'] = 'form-control is-invalid'
+            self.fields['new_password2'].widget.attrs['class'] = 'form-control is-invalid'
+
+            raise ValidationError(errors)
+
+        return password2
