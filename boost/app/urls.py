@@ -1,7 +1,13 @@
+"""
+Этот модуль содержит url`ы страниц, связанных с документами.
+"""
+
+
 from django.contrib.auth.decorators import login_required
+from django.urls import path
+
 from app import views
 from app.ajax_queryes import ajax_notes
-from django.urls import path
 
 
 urlpatterns = [
@@ -13,7 +19,9 @@ urlpatterns = [
     path('bookmarks/', login_required(views.bookmarks, login_url='/login/'), name='bookmarks'),
 
     path('document<int:pk>/', login_required(views.doc_page, login_url='/login/'), name='doc_page'),
-    path('document<int:pk>/edit/', login_required(views.doc_page_edit, login_url='/login/'), name='doc_page'),
+    path('document<int:pk>/edit/',
+         login_required(views.doc_page_edit, login_url='/login/'),
+         name='doc_page'),
     path('create/', login_required(views.create_docs, login_url='/login/'), name='create_docs'),
 
     path('document<int:pk>/getdata', ajax_notes.get_data, name='data_get_ajax'),

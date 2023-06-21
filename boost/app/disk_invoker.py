@@ -1,5 +1,6 @@
 """
-Этот модуль содержит исполнителя, созданного на основе модуля yadisk (Яндекс.Диск) и комманды к исполнителю.
+Этот модуль содержит исполнителя, созданного на основе
+модуля yadisk (Яндекс.Диск) и комманды к исполнителю.
 """
 
 
@@ -13,55 +14,100 @@ class DiskInvoker:
     Класс исполнитель, выполняющий комманды, связанные с "Яндекс.Диск".
     """
     def __init__(self, token: str):
-
+        """
+        Конструктор класса DiskInvoker.
+        Создает экземпляр класса yadisk.YaDisk.
+        Принимает специальный токен.
+        Получить можно здесь: https://yandex.ru/dev/disk/rest/.
+        """
         self.disk = yadisk.YaDisk(token=token)
 
     def run(self, command, **kwargs):
+        """
+        Метод принимает на вход комманду и
+        необходимые дополнительные параметры
+        """
         return command(self).execute(**kwargs)
 
 
-class Command(object):
+
+class UploadFileCommand:
+    """
+    Класс комманды сохранения файла на облако.
+    """
     def __init__(self, disk_invoker: DiskInvoker):
+        """
+        Конструктор команды.
+        Принимает на вход объект исполнителя.
+        """
         self.disk = disk_invoker.disk
 
     def execute(self, **kwargs):
-        pass
-
-
-class UploadFileCommand(Command):
-    def __init__(self, disk_invoker: DiskInvoker):
-        super().__init__(disk_invoker)
-
-    def execute(self, **kwargs):
+        """
+        Сохраняет файл на облако.
+        """
         self.disk.upload(kwargs['file'], kwargs['path'])
 
 
-class PublishFileCommand(Command):
+class PublishFileCommand:
+    """
+    Класс комманды, которая делает файл на диске публичным.
+    """
     def __init__(self, disk_invoker: DiskInvoker):
-        super().__init__(disk_invoker)
+        """
+        Конструктор команды.
+        Принимает на вход объект исполнителя.
+        """
+        self.disk = disk_invoker.disk
 
     def execute(self, **kwargs):
+        """
+        Делает файл публичным.
+        """
         self.disk.publish(kwargs['path'])
 
 
-class GetInfoCommand(Command):
+class GetInfoCommand:
+    """
+    Класс комманды, получающей информацию о файле.
+    """
     def __init__(self, disk_invoker: DiskInvoker):
-        super().__init__(disk_invoker)
+        """
+        Конструктор команды.
+        Принимает на вход объект исполнителя.
+        """
+        self.disk = disk_invoker.disk
 
     def execute(self, **kwargs):
+        """
+        Получает инфу о файле, лежащему по такому-то пути.
+        """
         info = self.disk.get_meta(kwargs['path'])
         return info
 
 
-class DeleteFileCommand(Command):
+class DeleteFileCommand:
+    """
+    Класс комманды, которая удаляет файл.
+    """
     def __init__(self, disk_invoker: DiskInvoker):
-        super().__init__(disk_invoker)
+        """
+        Конструктор команды.
+        Принимает на вход объект исполнителя.
+        """
+        self.disk = disk_invoker.disk
 
     def execute(self, **kwargs):
+        """
+        Удаляет файл, лежащий по такому-то пути.
+        """
         self.disk.remove(kwargs['path'])
 
 
 class COMMANDS:
+    """
+    Класс, содержащий список исполняемых комманд.
+    """
     UPLOAD = UploadFileCommand
     PUBLISH = PublishFileCommand
     INFO = GetInfoCommand
@@ -69,10 +115,16 @@ class COMMANDS:
 
 
 def unique_name_generator():
+    """
+    Генерирует уникальное имя файла.
+    """
     return str(uuid.uuid4())
 
 
 def main():
+    """
+    For fun :)
+    """
     path = f'{dotenv.get_key(r"../../.env", "DISK_PATH")}' \
            f'{unique_name_generator()}'
 
