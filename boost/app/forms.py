@@ -1,5 +1,5 @@
 from django import forms
-from .tags import Subject, Study
+from app.tags import Subject, Study
 
 
 class DocCreationForm(forms.Form):

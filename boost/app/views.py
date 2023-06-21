@@ -8,11 +8,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseForbidden
 
-from .disk_invoker import unique_name_generator, DiskInvoker, COMMANDS
-from .forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm, SearchForm
+from app.disk_invoker import unique_name_generator, DiskInvoker, COMMANDS
+from app.forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm, SearchForm
 from accounts import forms
-from .models import Doc
-from .sort_docs import SortDocs
+from app.models import Doc
+from app.sort_docs import SortDocs
 
 
 User = get_user_model()

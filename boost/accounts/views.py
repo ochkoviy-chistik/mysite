@@ -10,9 +10,9 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib import messages
 
 from django.contrib.auth import get_user_model
-from .tokens import account_activation_token
+from accounts.tokens import account_activation_token
 
-from . import forms
+from accounts import forms
 
 # Create your views here.
 

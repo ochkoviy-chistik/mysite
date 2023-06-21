@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import Doc
-from .tags import Study, Subject
-from .notes import Like, Dislike, Comment
+from app.models import Doc
+from app.tags import Study, Subject
+from app.notes import Like, Dislike, Comment
 
 
 # Register your models here.

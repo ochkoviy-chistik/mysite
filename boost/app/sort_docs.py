@@ -1,5 +1,5 @@
 from django.db.models import Q
-from .models import Doc
+from app.models import Doc
 
 
 class SortDocs:

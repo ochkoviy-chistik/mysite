@@ -1,11 +1,11 @@
 from django import forms
-from django.contrib.auth import get_user_model, password_validation
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField, PasswordResetForm, SetPasswordForm
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.contrib.auth.hashers import make_password
 from django.utils.translation import gettext_lazy as _
 
-from . import password_validators
+from accounts import password_validators
 
 User = get_user_model()
 
@@ -165,9 +165,9 @@ class UserAdminCreationForm(forms.ModelForm):
         fields = ['email', 'username', 'avatar', 'first_name', 'last_name']
 
     def clean(self):
-        '''
+        """
         Verify both passwords match.
-        '''
+        """
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
         password_2 = cleaned_data.get("password_2")

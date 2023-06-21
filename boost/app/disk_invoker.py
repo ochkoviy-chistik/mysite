@@ -1,9 +1,19 @@
+"""
+Этот модуль содержит исполнителя, созданного на основе модуля yadisk (Яндекс.Диск) и комманды к исполнителю.
+"""
+
+
 import uuid
 import yadisk
+import dotenv
 
 
 class DiskInvoker:
-    def __init__(self, token):
+    """
+    Класс исполнитель, выполняющий комманды, связанные с "Яндекс.Диск".
+    """
+    def __init__(self, token: str):
+
         self.disk = yadisk.YaDisk(token=token)
 
     def run(self, command, **kwargs):
@@ -77,4 +87,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

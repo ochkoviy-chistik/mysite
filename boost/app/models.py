@@ -1,6 +1,6 @@
 from django.db import models
-from boost import settings
-from .tags import Study, Subject
+from django.conf import settings
+from app.tags import Study, Subject
 
 # Create your models here.
 
@@ -8,6 +8,8 @@ User = settings.AUTH_USER_MODEL
 
 
 class Doc (models.Model):
+    objects = models.Manager()
+
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=511, blank=True)
 

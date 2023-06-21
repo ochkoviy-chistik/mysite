@@ -1,18 +1,35 @@
+"""
+Этот модуль содержит модели оценок документов и комментариев к ним.
+"""
+
+from django.conf import settings
 from django.db import models
-from boost.settings import AUTH_USER_MODEL
+
 from app.models import Doc
 
-User = AUTH_USER_MODEL
+
+User = settings.AUTH_USER_MODEL
 
 
 class Like (models.Model):
+    """
+    Класс модели лайка.
+    """
+    objects = models.Manager()
+
     doc = models.ForeignKey(Doc, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
+        """
+        Возвращает фразу "<автор> оценил документ <документ>"
+        """
         return f'{self.author} оценил документ "{self.doc}"'
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        """
+        Сохраняет лайк и делает проверку на наличие дизлайка.
+        """
         dislike = Dislike.objects.filter(
             doc=self.doc, author=self.author
         )
@@ -24,10 +41,18 @@ class Like (models.Model):
 
 
 class Dislike (models.Model):
+    """
+    Класс модели дизлайка.
+    """
+    objects = models.Manager()
+
     doc = models.ForeignKey(Doc, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        """
+        Сохраняет дизлайк и делает проверку на наличие лайка.
+        """
         like = Like.objects.filter(
             doc=self.doc, author=self.author
         )
@@ -38,14 +63,25 @@ class Dislike (models.Model):
         super().save(force_insert=False, force_update=False, using=None, update_fields=None)
 
     def __str__(self):
+        """
+        Возвращает фразу "<автор> оценил документ <документ>"
+        """
         return f'{self.author} оценил документ "{self.doc}"'
 
 
 class Comment (models.Model):
+    """
+    Класс модели комментария.
+    """
+    objects = models.Manager()
+
     text = models.CharField(max_length=511)
     doc = models.ForeignKey(Doc, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()
 
     def __str__(self):
-        return self.text
+        """
+        Возвращает текст комментария.
+        """
+        return str(self.text)
