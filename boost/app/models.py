@@ -1,6 +1,11 @@
+"""
+Модуль с моделями.
+"""
+
+
 from django.db import models
 from django.conf import settings
-from app.tags import Study, Subject
+from app.third_party.tags import Study, Subject
 
 # Create your models here.
 
@@ -8,6 +13,9 @@ User = settings.AUTH_USER_MODEL
 
 
 class Doc (models.Model):
+    """
+    Класс модели документа.
+    """
     objects = models.Manager()
 
     title = models.CharField(max_length=255)
@@ -33,4 +41,7 @@ class Doc (models.Model):
     date = models.DateField()
 
     def __str__(self):
-        return self.title
+        """
+        Выводит название документа.
+        """
+        return str(self.title)

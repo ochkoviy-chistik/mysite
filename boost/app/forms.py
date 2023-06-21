@@ -1,8 +1,16 @@
+"""
+Содержит формы для моделей.
+"""
+
+
 from django import forms
-from app.tags import Subject, Study
+from app.third_party.tags import Subject, Study
 
 
 class DocCreationForm(forms.Form):
+    """
+    Класс формы создания моделей документов.
+    """
     title = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -57,26 +65,36 @@ class DocCreationForm(forms.Form):
     )
 
     def clean_file(self):
+        """
+        Совершают особую проверку файла.
+        """
         validators = ['pdf', 'docx', 'doc', 'ppt', 'pptx']
         file = self.cleaned_data.get('file')
 
-        if str(file.name).lower().split('.')[-1] not in validators:
+        if str(file.name).lower().rsplit('.', maxsplit=1)[-1] not in validators:
             self.fields['file'].widget.attrs['class'] = 'form-control is-invalid'
             raise forms.ValidationError('Недопустимый тип файла!')
 
         return file
 
     def clean_preview(self):
+        """
+        Совершает особую проверку превью.
+        """
         validators = ['png', 'jpg', 'jpeg', 'webp', 'heic']
         image = self.cleaned_data.get('preview')
 
-        if image is not None and str(image.name).lower().split('.')[-1] not in validators:
+        if image is not None and \
+                str(image.name).lower().rsplit('.', maxsplit=1)[-1] not in validators:
             self.fields['image'].widget.attrs['class'] = 'form-control is-invalid'
             raise forms.ValidationError('Недопустимый формат картинки!')
 
         return image
 
     def clean(self):
+        """
+        Совершает проверку тегов.
+        """
         subjects = self.cleaned_data.get('subjects')
         studies = self.cleaned_data.get('studies')
 
@@ -92,6 +110,9 @@ class DocCreationForm(forms.Form):
 
 
 class DocEditForm(forms.Form):
+    """
+    Класс редактирования моделей документов.
+    """
     title = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -145,25 +166,36 @@ class DocEditForm(forms.Form):
     )
 
     def clean_file(self):
+        """
+        Совершают особую проверку файла.
+        """
         validators = ['pdf', 'docx', 'doc', 'ppt', 'pptx']
         file = self.cleaned_data.get('file')
 
-        if file is not None and str(file.name).lower().split('.')[-1] not in validators:
+        if file is not None and \
+                str(file.name).lower().rsplit('.', maxsplit=1)[-1] not in validators:
             self.fields['file'].widget.attrs['class'] = 'form-control is-invalid'
             raise forms.ValidationError('Недопустимый тип файла!')
 
         return file
 
     def clean_preview(self):
+        """
+        Совершают особую проверку превью.
+        """
         validators = ['png', 'jpg', 'jpeg', 'webp', 'heic']
         image = self.cleaned_data.get('preview')
 
-        if image is not None and str(image.name).lower().split('.')[-1] not in validators:
+        if image is not None and \
+                str(image.name).lower().rsplit('.', maxsplit=1)[-1] not in validators:
             raise forms.ValidationError('Недопустимый формат картинки!')
 
         return image
 
     def clean(self):
+        """
+        Совершает проверку тегов.
+        """
         subjects = self.cleaned_data.get('subjects')
         studies = self.cleaned_data.get('studies')
 
@@ -179,6 +211,9 @@ class DocEditForm(forms.Form):
 
 
 class CommentForm(forms.Form):
+    """
+    Класс формы комментария.
+    """
     comment = forms.CharField(
         widget=forms.TextInput,
         max_length=511
@@ -186,6 +221,9 @@ class CommentForm(forms.Form):
 
 
 class TagsSortForm(forms.Form):
+    """
+    Класс формы тегов.
+    """
     subjects = forms.ModelMultipleChoiceField(
         queryset=Subject.objects.all(),
         widget=forms.CheckboxSelectMultiple
@@ -207,6 +245,9 @@ class TagsSortForm(forms.Form):
 
 
 class SearchForm(forms.Form):
+    """
+    Класс формы поиска документов по названию.
+    """
     q = forms.CharField(
         label='Поиск по названию',
         widget=forms.TextInput(

@@ -3,7 +3,7 @@ import datetime
 from django.http import JsonResponse
 import json
 
-from app.notes import Like, Dislike, Comment
+from app.third_party.notes import Like, Dislike, Comment
 from app.models import Doc
 
 

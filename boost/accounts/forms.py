@@ -109,7 +109,7 @@ class UserChangeForm (forms.ModelForm):
 
         qs = User.objects.filter(username=username)
 
-        if qs.exists():
+        if qs.exists() and username != self.instance.username:
             self.fields['username'].widget.attrs['class'] = 'form-control is-invalid'
             raise forms.ValidationError('Пользователь с этим ником уже существует!')
 
@@ -254,16 +254,15 @@ class SetFloatPasswordForm (SetPasswordForm):
         password1 = self.cleaned_data.get("new_password1")
         password2 = self.cleaned_data.get("new_password2")
 
-        if password1 and password2 and password1 != password2:
-            self.fields['new_password1'].widget.attrs['class'] = 'form-control is-invalid'
-            self.fields['new_password2'].widget.attrs['class'] = 'form-control is-invalid'
-
-            raise ValidationError(
-                self.error_messages["password_mismatch"],
-                code="password_mismatch",
-            )
-
         errors = password_validators.password_valid(password2, self.user)
+
+        if password1 and password2 and password1 != password2:
+            errors.append(
+                ValidationError(
+                    self.error_messages["password_mismatch"],
+                    code="password_mismatch",
+                )
+            )
 
         if errors:
             self.fields['new_password1'].widget.attrs['class'] = 'form-control is-invalid'

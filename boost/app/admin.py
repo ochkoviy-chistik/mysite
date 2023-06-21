@@ -7,8 +7,8 @@
 from django.contrib import admin
 
 from app.models import Doc
-from app.tags import Study, Subject
-from app.notes import Like, Dislike, Comment
+from app.third_party.tags import Study, Subject
+from app.third_party.notes import Like, Dislike, Comment
 
 
 # Register your models here.

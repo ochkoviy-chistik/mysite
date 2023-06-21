@@ -1,11 +1,22 @@
+"""
+Модуль, отвечающий за сортировку документов.
+"""
+
+
 from django.db.models import Q
 from app.models import Doc
 
 
 class SortDocs:
+    """
+    Класс отвечающий за сортировку.
+    """
     SORT_TYPES = ['-likes', '-dislikes', '-date', 'date']
 
     def __init__(self, request):
+        """
+        Конструктор класса, объявляющий запросы.
+        """
         self.sort_type = None
         self.query_studies = Q()
         self.query_subjects = Q()
@@ -18,6 +29,9 @@ class SortDocs:
         self.sort_type_get = request.GET.get('sort_type')
 
     def convert(self):
+        """
+        Проверяет запросы и приводит их к общему виду.
+        """
         if self.sort_type_get:
             self.sort_type = self.SORT_TYPES[int(self.sort_type_get) - 1]
         else:
@@ -38,6 +52,10 @@ class SortDocs:
             )
 
     def make_request(self, docs=Doc.objects.all()):
+        """
+        Формирует единый запрос и получает документы,
+        соответствующие данным параметрам.
+        """
         docs = docs.filter(
             self.query_subjects & self.query_studies & (self.query_title | self.query_description)
         ).order_by(self.sort_type)

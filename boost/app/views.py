@@ -1,6 +1,9 @@
 import datetime
+
 import os
+
 from io import BytesIO
+
 import dotenv
 
 from django.contrib import messages
@@ -8,11 +11,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseForbidden
 
-from app.disk_invoker import unique_name_generator, DiskInvoker, COMMANDS
-from app.forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm, SearchForm
 from accounts import forms
+
+from app.third_party.disk_invoker import unique_name_generator, DiskInvoker, COMMANDS
+from app.forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm, SearchForm
 from app.models import Doc
-from app.sort_docs import SortDocs
+from app.third_party.sort_docs import SortDocs
 
 
 User = get_user_model()
@@ -292,6 +296,3 @@ def create_docs(request):
 
     context['form'] = form
     return render(request, 'create_docs.html', context)
-
-
-
