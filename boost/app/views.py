@@ -1,17 +1,15 @@
 import datetime
 
-import os
-
 from io import BytesIO
-
-import dotenv
 
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.http import HttpResponseForbidden
+from django.conf import settings
 
 from accounts import forms
+from app.ImageManager import ImageManager
 
 from app.third_party.disk_invoker import unique_name_generator, DiskInvoker, COMMANDS
 from app.forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm, SearchForm
@@ -23,10 +21,6 @@ User = get_user_model()
 
 
 # Create your views here.
-dotenv.load_dotenv(dotenv.find_dotenv())
-
-DISK_TOKEN = os.environ.get('DISK_TOKEN')
-DISK_PATH = os.environ.get('DISK_PATH')
 
 
 def index(request):
@@ -111,6 +105,7 @@ def profile_edit(request, pk):
         return HttpResponseForbidden()
 
     if request.method == 'POST':
+        manager = ImageManager(request.user.avatar.path)
         form = forms.UserChangeForm(request.POST, request.FILES, instance=request.user)
 
         if form.is_valid():
@@ -118,7 +113,8 @@ def profile_edit(request, pk):
                 request.user.avatar = request.FILES['avatar']
 
             else:
-                request.user.avatar = 'media/default_images/default_avatar.png'
+                manager.delete()
+                request.user.avatar = settings.DEFAULT_AVATAR
 
             form.save()
 
@@ -186,7 +182,7 @@ def doc_page(request, pk):
 
     if request.method == 'POST':
         if request.POST.get('delete'):
-            disk_invoker = DiskInvoker(token=DISK_TOKEN)
+            disk_invoker = DiskInvoker(token=settings.DISK_TOKEN)
             disk_invoker.run(COMMANDS.DELETE, path=doc.path)
             doc.delete()
             return redirect('/docs')
@@ -215,6 +211,7 @@ def doc_page_edit(request, pk):
         }
     )
     if request.method == 'POST':
+        manager = ImageManager(doc.preview.path)
         form = DocEditForm(request.POST, request.FILES)
 
         if form.is_valid():
@@ -223,16 +220,18 @@ def doc_page_edit(request, pk):
 
             if 'preview' in request.FILES:
                 doc.preview = request.FILES['preview']
+
             else:
-                doc.preview = 'media/default_images/default_document.png'
+                manager.delete()
+                doc.preview = settings.DEFAULT_PREVIEW
 
             if 'file' in request.FILES:
-                disk_invoker = DiskInvoker(token=DISK_TOKEN)
+                disk_invoker = DiskInvoker(token=settings.DISK_TOKEN)
                 disk_invoker.run(COMMANDS.DELETE, path=doc.path)
 
-                path = DISK_PATH + unique_name_generator()
+                path = settings.DISK_PATH + unique_name_generator()
 
-                disk_invoker = DiskInvoker(token=DISK_TOKEN)
+                disk_invoker = DiskInvoker(token=settings.DISK_TOKEN)
                 response_file = BytesIO(
                     [i for i in request.FILES['file'].chunks()][0]
                 )
@@ -262,9 +261,9 @@ def create_docs(request):
         form = DocCreationForm(request.POST, request.FILES)
 
         if form.is_valid():
-            path = DISK_PATH + unique_name_generator()
+            path = settings.DISK_PATH + unique_name_generator()
 
-            disk_invoker = DiskInvoker(token=DISK_TOKEN)
+            disk_invoker = DiskInvoker(token=settings.DISK_TOKEN)
             response_file = BytesIO(
                 [i for i in request.FILES['file'].chunks()][0]
             )

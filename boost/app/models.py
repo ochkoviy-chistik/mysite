@@ -25,9 +25,9 @@ class Doc (models.Model):
     path = models.CharField(max_length=127)
 
     preview = models.ImageField(
-        upload_to='media/',
+        upload_to=settings.PREVIEWS_UPLOAD_PATH,
         blank=False,
-        default='media/default_images/default_document.png'
+        default=settings.DEFAULT_PREVIEW
     )
 
     likes = models.IntegerField(default=0)

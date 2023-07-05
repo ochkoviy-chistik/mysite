@@ -56,6 +56,15 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'boost.urls'
 AUTH_USER_MODEL = 'accounts.User'
 
+DISK_TOKEN = os.environ.get('DISK_TOKEN')
+DISK_PATH = os.environ.get('DISK_PATH')
+
+AVATARS_UPLOAD_PATH = 'media/users_avatars/'
+PREVIEWS_UPLOAD_PATH = 'media/users_previews/'
+
+DEFAULT_AVATAR = 'media/default_images/default_avatar.png'
+DEFAULT_PREVIEW = 'media/default_images/default_document.png'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
