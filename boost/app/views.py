@@ -9,7 +9,7 @@ from django.http import HttpResponseForbidden
 from django.conf import settings
 
 from accounts import forms
-from app.ImageManager import ImageManager
+from app.third_party.ImageManager import ImageManager
 
 from app.third_party.disk_invoker import unique_name_generator, DiskInvoker, COMMANDS
 from app.forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm, SearchForm
