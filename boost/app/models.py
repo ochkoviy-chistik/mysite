@@ -1,10 +1,13 @@
 """
 Модуль с моделями.
 """
-
+from io import BytesIO
 
 from django.db import models
 from django.conf import settings
+
+from app.third_party.ImageManager import ImageManager
+from app.third_party.disk_invoker import DiskInvoker, COMMANDS, unique_name_generator
 from app.third_party.tags import Study, Subject
 
 # Create your models here.
@@ -39,6 +42,40 @@ class Doc (models.Model):
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()
+
+    def __init__(self, *args, **kwargs):
+        self.file = None
+        super().__init__(*args, **kwargs)
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None,
+    ):
+        if self.file is not None:
+            path = settings.DISK_PATH + unique_name_generator()
+
+            disk_invoker = DiskInvoker(token=settings.DISK_TOKEN)
+            response_file = BytesIO(
+                list(self.file)[0]
+            )
+
+            disk_invoker.run(COMMANDS.UPLOAD, path=path, file=response_file)
+            disk_invoker.run(COMMANDS.PUBLISH, path=path)
+            info = disk_invoker.run(COMMANDS.INFO, path=path)
+
+            self.link = info['public_url']
+            self.path = path
+
+        super().save(force_insert, force_update, using, update_fields)
+
+    def delete(self, using=None, keep_parents=False):
+        disk_invoker = DiskInvoker(token=settings.DISK_TOKEN)
+        disk_invoker.run(COMMANDS.DELETE, path=self.path)
+
+        super().delete(using, keep_parents)
+
+
+    def use_file(self, file):
+        self.file = file
 
     def __str__(self):
         """

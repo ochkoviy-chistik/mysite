@@ -90,11 +90,11 @@ class User (AbstractBaseUser):
         blank=False,
     )
     first_name = models.CharField(
-        verbose_name='ваше имя',
+        verbose_name='Имя',
         max_length=30
     )
     last_name = models.CharField(
-        verbose_name='вашу фамилию',
+        verbose_name='Фамилия',
         max_length=30
     )
     bookmarks = models.ManyToManyField(

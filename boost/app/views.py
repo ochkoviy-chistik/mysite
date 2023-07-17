@@ -1,7 +1,5 @@
 import datetime
 
-from io import BytesIO
-
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
@@ -11,7 +9,6 @@ from django.conf import settings
 from accounts import forms
 from app.third_party.ImageManager import ImageManager
 
-from app.third_party.disk_invoker import unique_name_generator, DiskInvoker, COMMANDS
 from app.forms import DocCreationForm, DocEditForm, CommentForm, TagsSortForm, SearchForm
 from app.models import Doc
 from app.third_party.sort_docs import SortDocs
@@ -182,13 +179,11 @@ def doc_page(request, pk):
 
     if request.method == 'POST':
         if request.POST.get('delete'):
-            disk_invoker = DiskInvoker(token=settings.DISK_TOKEN)
-            disk_invoker.run(COMMANDS.DELETE, path=doc.path)
+            manager = ImageManager(doc.preview.path)
+            manager.delete()
             doc.delete()
-            return redirect('/docs')
 
-        if form.is_valid():
-            pass
+            return redirect('/docs')
 
     context['form'] = form
 
@@ -210,6 +205,7 @@ def doc_page_edit(request, pk):
             'studies': doc.studies.all(),
         }
     )
+
     if request.method == 'POST':
         manager = ImageManager(doc.preview.path)
         form = DocEditForm(request.POST, request.FILES)
@@ -226,20 +222,8 @@ def doc_page_edit(request, pk):
                 doc.preview = settings.DEFAULT_PREVIEW
 
             if 'file' in request.FILES:
-                disk_invoker = DiskInvoker(token=settings.DISK_TOKEN)
-                disk_invoker.run(COMMANDS.DELETE, path=doc.path)
-
-                path = settings.DISK_PATH + unique_name_generator()
-
-                disk_invoker = DiskInvoker(token=settings.DISK_TOKEN)
-                response_file = BytesIO(
-                    [i for i in request.FILES['file'].chunks()][0]
-                )
-                disk_invoker.run(COMMANDS.UPLOAD, path=path, file=response_file)
-                disk_invoker.run(COMMANDS.PUBLISH, path=path)
-
-                doc.link = disk_invoker.run(COMMANDS.INFO, path=path)['public_url']
-                doc.path = path
+                file = request.FILES['file'].chunks()
+                doc.use_file(file)
 
             doc.save()
 
@@ -261,21 +245,8 @@ def create_docs(request):
         form = DocCreationForm(request.POST, request.FILES)
 
         if form.is_valid():
-            path = settings.DISK_PATH + unique_name_generator()
-
-            disk_invoker = DiskInvoker(token=settings.DISK_TOKEN)
-            response_file = BytesIO(
-                [i for i in request.FILES['file'].chunks()][0]
-            )
-
-            disk_invoker.run(COMMANDS.UPLOAD, path=path, file=response_file)
-            disk_invoker.run(COMMANDS.PUBLISH, path=path)
-            info = disk_invoker.run(COMMANDS.INFO, path=path)
-
             doc = Doc(
                 title=str(form.cleaned_data.get('title')).lower(),
-                link=info['public_url'],
-                path=path,
                 description=form.cleaned_data.get('description'),
                 author=request.user,
                 date=datetime.datetime.now()
@@ -284,7 +255,11 @@ def create_docs(request):
             if 'preview' in request.FILES:
                 doc.preview = request.FILES['preview']
 
+            file = request.FILES['file'].chunks()
+
+            doc.use_file(file)
             doc.save()
+
             doc.studies.set(form.cleaned_data.get('studies'))
             doc.subjects.set(form.cleaned_data.get('subjects'))
 
