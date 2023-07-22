@@ -4,7 +4,8 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.contrib.auth import authenticate, login as login_auth
 from django.template.loader import render_to_string
-from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView, \
+    PasswordResetCompleteView, PasswordResetDoneView
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib import messages
@@ -117,8 +118,18 @@ def login(request):
 
 
 class StyledPasswordResetView (PasswordResetView):
+    template_name = r'password_reset_templates/my_password_reset_form.html'
     form_class = forms.FloatPasswordResetForm
 
 
+class StyledPasswordResetCompleteView (PasswordResetCompleteView):
+    template_name = r'password_reset_templates/my_password_reset_complete.html'
+
+
+class StyledPasswordResetDoneView (PasswordResetDoneView):
+    template_name = r'password_reset_templates/my_password_reset_done.html'
+
+
 class StyledPasswordResetConfirmView (PasswordResetConfirmView):
+    template_name = r'password_reset_templates/my_password_reset_confirm.html'
     form_class = forms.SetFloatPasswordForm

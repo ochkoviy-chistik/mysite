@@ -15,7 +15,8 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
-dotenv.load_dotenv(dotenv.find_dotenv())
+env_dir = os.path.expanduser(r'~/PycharmProjects/boostJoy/')
+dotenv.load_dotenv(os.path.join(env_dir, '.env'))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
