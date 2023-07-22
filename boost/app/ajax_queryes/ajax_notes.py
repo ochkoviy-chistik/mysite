@@ -2,6 +2,7 @@ import datetime
 
 from django.http import JsonResponse
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 from app.third_party.notes import Like, Dislike, Comment
 from app.models import Doc
@@ -48,6 +49,7 @@ def get_data(request, pk):
     return JsonResponse(context)
 
 
+@csrf_exempt
 def like_post(request):
     if request.method == 'POST':
         data = json.load(request)
@@ -76,6 +78,7 @@ def like_post(request):
     return JsonResponse({})
 
 
+@csrf_exempt
 def dislike_post(request):
     if request.method == 'POST':
         data = json.load(request)
@@ -104,6 +107,7 @@ def dislike_post(request):
     return JsonResponse({})
 
 
+@csrf_exempt
 def comment_post(request):
 
     if request.method == 'POST':
@@ -125,6 +129,7 @@ def comment_post(request):
     return JsonResponse({})
 
 
+@csrf_exempt
 def bookmark_post(request):
 
     if request.method == 'POST':
@@ -143,6 +148,7 @@ def bookmark_post(request):
     return JsonResponse({})
 
 
+@csrf_exempt
 def delete_comment(request):
 
     if request.method == 'POST':

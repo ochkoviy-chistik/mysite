@@ -4,142 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8f390315-3136-43a3-abf3-1b2bfb8acee6" name="Changes" comment="добавил менеджер картинок">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/boostJoy.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/boostJoy.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="8f390315-3136-43a3-abf3-1b2bfb8acee6" name="Changes" comment="изменил расположение шаблонов изменения пароля">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/accounts/templates/registration/password_reset_complete.html" beforeDir="false" afterPath="$PROJECT_DIR$/boost/accounts/templates/password_reset_templates/my_password_reset_complete.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/accounts/templates/registration/password_reset_confirm.html" beforeDir="false" afterPath="$PROJECT_DIR$/boost/accounts/templates/password_reset_templates/my_password_reset_confirm.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/accounts/templates/registration/password_reset_done.html" beforeDir="false" afterPath="$PROJECT_DIR$/boost/accounts/templates/password_reset_templates/my_password_reset_done.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/accounts/templates/registration/password_reset_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/boost/accounts/templates/password_reset_templates/my_password_reset_form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/accounts/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/boost/accounts/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/boost/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/boost/boost/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/autocomplete.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/base.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/changelists.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/dark_mode.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/dashboard.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/forms.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/login.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/nav_sidebar.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/responsive.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/responsive_rtl.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/rtl.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/vendor/select2/LICENSE-SELECT2.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/vendor/select2/select2.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/vendor/select2/select2.min.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/css/widgets.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/calendar-icons.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/gis/move_vertex_off.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/gis/move_vertex_on.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/icon-addlink.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/icon-alert.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/icon-calendar.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/icon-changelink.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/icon-clock.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/icon-deletelink.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/icon-no.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/icon-unknown-alt.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/icon-unknown.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/icon-viewlink.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/icon-yes.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/inline-delete.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/search.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/selector-icons.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/sorting-icons.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/tooltag-add.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/img/tooltag-arrowright.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/SelectBox.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/SelectFilter2.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/actions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/admin/DateTimeShortcuts.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/admin/RelatedObjectLookups.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/autocomplete.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/calendar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/cancel.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/change_form.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/collapse.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/core.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/filters.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/inlines.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/jquery.init.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/nav_sidebar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/popup_response.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/prepopulate.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/prepopulate_init.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/theme.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/urlify.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/jquery/LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/jquery/jquery.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/jquery/jquery.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/LICENSE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/af.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/ar.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/az.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/bg.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/bn.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/bs.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/ca.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/cs.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/da.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/de.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/dsb.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/el.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/en.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/es.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/et.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/eu.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/fa.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/fi.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/fr.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/gl.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/he.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/hi.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/hr.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/hsb.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/hu.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/hy.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/id.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/is.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/it.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/ja.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/ka.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/km.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/ko.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/lt.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/lv.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/mk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/ms.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/nb.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/ne.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/nl.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/pl.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/ps.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/pt-BR.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/pt.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/ro.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/ru.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/sk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/sl.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/sq.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/sr-Cyrl.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/sr.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/sv.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/th.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/tk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/tr.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/uk.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/vi.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/zh-CN.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/i18n/zh-TW.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/select2.full.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/select2/select2.full.min.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/xregexp/LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/xregexp/xregexp.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boost/media/admin/js/vendor/xregexp/xregexp.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/boost/app/ajax_queryes/ajax_notes.py" beforeDir="false" afterPath="$PROJECT_DIR$/boost/app/ajax_queryes/ajax_notes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boost/app/templates/doc_page.html" beforeDir="false" afterPath="$PROJECT_DIR$/boost/app/templates/doc_page.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boost/static/java_scripts/post_notes.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,14 +33,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "/home/prom/PycharmProjects/boostJoy/boost/boost",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/prom/PycharmProjects/boostJoy/boost/boost&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/boost/boost" />
@@ -200,7 +69,15 @@
       <option name="project" value="LOCAL" />
       <updated>1688586656632</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="изменил расположение шаблонов изменения пароля">
+      <option name="closed" value="true" />
+      <created>1690010357110</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1690010357110</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -228,6 +105,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="добавил менеджер картинок" />
-    <option name="LAST_COMMIT_MESSAGE" value="добавил менеджер картинок" />
+    <MESSAGE value="изменил расположение шаблонов изменения пароля" />
+    <option name="LAST_COMMIT_MESSAGE" value="изменил расположение шаблонов изменения пароля" />
   </component>
 </project>

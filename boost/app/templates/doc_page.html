@@ -104,16 +104,19 @@
                     </section>
                     <section class="border border-1 rounded" id="commentsSection">
                         <h2>Комментарии:</h2>
-                        <div class="d-flex justify-content-center">
+                        <div>
                             <form method="POST">
-                                {% csrf_token %}
-                                <input type="text" id="messageInput" name="messageInput">
-                                <input class="btn btn-primary" type="button" id="messageButton" value="Отправить" onclick="postComment();setTimeout(loadData, 50)" disabled>
+                                <div class="d-flex p-2">
+                                    <div class="form-floating d-flex flex-fill me-2">
+                                        <input type="text" class="form-control" id="messageInput" name="messageInput" placeholder="Сообщение">
+                                        <label for="messageInput">Сообщение:</label>
+                                    </div>
+                                    <input class="btn btn-primary" type="button" id="messageButton" value="Отправить" onclick="postComment();setTimeout(loadData, 50)" disabled>
+                                </div>
                             </form>
                         </div>
                         <hr>
                         <div id="commentBlock">
-
                         </div>
                     </section>
         </section>
@@ -250,9 +253,6 @@
             let xhr = new XMLHttpRequest();
             xhr.open(method="POST", url="/documents/postlikedata", async=true);
 
-            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            xhr.setRequestHeader('X-CSRFToken', "{{ csrf_token }}");
-
             let response = {
                 "doc": "{{doc.pk}}",
             }
@@ -264,9 +264,6 @@
             let xhr = new XMLHttpRequest();
             xhr.open(method="POST", url="/documents/postdislikedata", async=true);
 
-            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            xhr.setRequestHeader('X-CSRFToken', "{{ csrf_token }}");
-
             let response = {
                 "doc": "{{doc.pk}}",
             }
@@ -277,9 +274,6 @@
         function postComment() {
             let xhr = new XMLHttpRequest();
             xhr.open(method="POST", url="/documents/postcommentdata", async=true);
-
-            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            xhr.setRequestHeader('X-CSRFToken', "{{ csrf_token }}");
 
             let response = {
                 'text': messageInput.value,
@@ -293,9 +287,6 @@
             let xhr = new XMLHttpRequest();
             xhr.open(method="POST", url="/documents/postbookmarkdata", async=true);
 
-            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            xhr.setRequestHeader('X-CSRFToken', "{{ csrf_token }}");
-
             let response = {
                 "doc": "{{doc.pk}}",
             }
@@ -306,9 +297,6 @@
         function deleteComment(pk) {
             let xhr = new XMLHttpRequest();
             xhr.open(method="POST", url="/documents/deletecomment", async=true);
-
-            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            xhr.setRequestHeader('X-CSRFToken', "{{ csrf_token }}");
 
             let response = {
                 "doc": "{{doc.pk}}",
