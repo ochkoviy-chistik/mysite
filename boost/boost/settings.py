@@ -30,6 +30,7 @@ SECRET_KEY = os.environ.get('DJANGO_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
+API_DOMAIN = 'http://team-cloud'
 
 
 # Application definition

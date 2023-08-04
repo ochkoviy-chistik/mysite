@@ -146,3 +146,21 @@ class User (AbstractBaseUser):
         Is the user an admin member?
         """
         return self.admin
+
+    def to_json(self):
+        response = {
+            'email': self.email,
+            'username': self.username,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'avatar': settings.API_DOMAIN + self.avatar.url,
+            'bookmarks': {
+                'len': self.bookmarks.count(),
+                'data': [doc.to_json() for doc in self.bookmarks.all()]
+            },
+            'is_activate': self.is_active,
+            'is_staff': self.is_staff,
+            'is_admin': self.is_admin,
+        }
+
+        return response

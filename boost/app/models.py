@@ -1,6 +1,8 @@
 """
 Модуль с моделями.
 """
+
+import os
 from io import BytesIO
 
 from django.db import models
@@ -67,12 +69,31 @@ class Doc (models.Model):
 
         super().save(force_insert, force_update, using, update_fields)
 
+    def to_json(self):
+        resp = {
+            'title': self.title,
+            'description': self.description,
+            'link': self.link,
+            'path': self.path,
+            'preview': settings.API_DOMAIN + self.preview.url,
+            'likes': self.likes,
+            'dislikes': self.dislikes,
+            'comments': self.comments,
+            'tags': {
+                'studies': [str(study) for study in self.studies.all()],
+                'subjects': [str(subject) for subject in self.subjects.all()],
+            },
+            'author': self.author.username,
+            'date': self.date
+        }
+
+        return resp
+
     def delete(self, using=None, keep_parents=False):
         disk_invoker = DiskInvoker(token=settings.DISK_TOKEN)
         disk_invoker.run(COMMANDS.DELETE, path=self.path)
 
         super().delete(using, keep_parents)
-
 
     def use_file(self, file):
         self.file = file
